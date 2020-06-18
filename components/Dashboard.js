@@ -1,10 +1,12 @@
 import React, {Component } from 'react'
 import { View, Text, StyleSheet, TouchableOpacity } from 'react-native'
+import { FontAwesome } from '@expo/vector-icons';
 
 function createDashboardElement(text, style) {
 	return (
 		<TouchableOpacity style={style}>
 			<Text>{text}</Text>
+			<FontAwesome name="home" size={40} color="black"/>
 		</TouchableOpacity>
 	)
 }
@@ -40,13 +42,13 @@ const styles = StyleSheet.create({
 		flex: 1,
 		justifyContent: 'center',
 		alignItems: 'center',
-		height: 250,
+		height: 100,
 	},
 	blueView: {
 		backgroundColor: 'powderblue',
 		margin: 10,
 		flex: 1,
-		height: 200,
+		height: 100,
 		justifyContent: 'center',
 		alignItems: 'center'
 	},
