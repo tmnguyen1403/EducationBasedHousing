@@ -2,6 +2,7 @@ import React, {Component } from 'react'
 import { View, Text, StyleSheet, TouchableOpacity } from 'react-native'
 import { FontAwesome } from '@expo/vector-icons';
 import Calendar from './Calendar'
+import Announcements from './Announcements'
 
 function createDashboardElement(text, style) {
 	return (
@@ -21,7 +22,7 @@ class Dashboard extends Component {
 				<View style={styles.container}>
 					<View style={styles.row}>
 						<Calendar/>
-						{createDashboardElement(ANNOUNCEMENTS, styles.blueView)}
+						<Announcements/>
 					</View>
 					<View style={styles.row}>
 						{createDashboardElement(SETTINGS, styles.blueView)}
