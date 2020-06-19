@@ -3,6 +3,7 @@ import { View, Text, StyleSheet, TouchableOpacity } from 'react-native'
 import { FontAwesome } from '@expo/vector-icons';
 import Calendar from './Calendar'
 import Announcements from './Announcements'
+import MyCoordinator from './MyCoordinator'
 
 function createDashboardElement(text, style) {
 	return (
@@ -26,7 +27,7 @@ class Dashboard extends Component {
 					</View>
 					<View style={styles.row}>
 						{createDashboardElement(SETTINGS, styles.blueView)}
-						{createDashboardElement(MY_COORDINATOR, styles.blueView)}
+						<MyCoordinator/>
 					</View>
 				</View>
 
