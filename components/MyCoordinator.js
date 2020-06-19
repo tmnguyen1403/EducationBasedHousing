@@ -1,13 +1,16 @@
 import React, {Component } from 'react'
 import { View, Text, StyleSheet, TouchableOpacity } from 'react-native'
 import { Ionicons } from '@expo/vector-icons';
+import textStyle from '../utils/textstyle'
 
 class MyCoordinator extends Component {
+
 	render() {
+		const { generalStyle } = this.props
 		return (
-			<TouchableOpacity style={styles.calendar}>
-				<Text>My Coordinator</Text>
-				<Ionicons name="ios-contact" size={40} color="black"/>
+			<TouchableOpacity style={[styles.calendar, generalStyle]}>
+				<Ionicons name="ios-contact" size={40} color="blue"/>
+				<Text style={textStyle.main}>My Coordinator</Text>
 			</TouchableOpacity>
 		)
 	}
@@ -15,10 +18,8 @@ class MyCoordinator extends Component {
 
 const styles = StyleSheet.create({
 	calendar: {
-		backgroundColor: 'powderblue',
+		backgroundColor: 'white',
 		margin: 10,
-		flex: 1,
-		height: 100,
 		justifyContent: 'center',
 		alignItems: 'center'
 	}

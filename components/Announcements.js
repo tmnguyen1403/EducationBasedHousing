@@ -1,13 +1,17 @@
 import React, {Component } from 'react'
 import { View, Text, StyleSheet, TouchableOpacity } from 'react-native'
 import { FontAwesome } from '@expo/vector-icons';
+import textStyle from '../utils/textstyle'
 
 class Announcements extends Component {
 	render() {
+		const { generalStyle } = this.props
 		return (
-			<TouchableOpacity style={styles.calendar}>
-				<Text>Announcements</Text>
-				<FontAwesome name="newspaper-o" size={40} color="black"/>
+			<TouchableOpacity style={[styles.calendar, generalStyle]}>
+				<FontAwesome name="newspaper-o" size={40} color="blue"/>
+				<Text style={textStyle.main}>
+					Announcements
+				</Text>
 			</TouchableOpacity>
 		)
 	}
@@ -15,10 +19,8 @@ class Announcements extends Component {
 
 const styles = StyleSheet.create({
 	calendar: {
-		backgroundColor: 'powderblue',
+		backgroundColor: 'white',
 		margin: 10,
-		flex: 1,
-		height: 100,
 		justifyContent: 'center',
 		alignItems: 'center'
 	}
