@@ -8,9 +8,12 @@ import {
  } from 'react-native'
 import { FontAwesome } from '@expo/vector-icons';
 import Calendar from './Calendar'
-import Announcements from './Announcements'
+import Flyers from './Flyers'
 import MyCoordinator from './MyCoordinator'
 import Settings from './Settings'
+import FlyerCreator from './FlyerCreator'
+import EventCreator from './EventCreator'
+
 import createCustomText from './CustomText'
 
 class Dashboard extends Component {
@@ -19,16 +22,27 @@ class Dashboard extends Component {
 		const ANNOUNCEMENTS = "Announcements"
 		const SETTINGS = "Settings"
 		const MY_COORDINATOR = "My Coordinator"
-		const background_image = require('../resources/images/background_image.jpg')
+		const calendarIcon = ``
+		const backgroundImage = require('../resources/images/background_image.jpg')
+		//save isManager into redux store
+		//const { isManager } = this.props
+		const isManager = true
 		return (
-			<ImageBackground source={background_image} style={styles.backgroundImage}>
-			<View style={styles.row}>
-				<Calendar generalStyle={styles.generalStyle}/>
-				<Announcements  generalStyle={styles.generalStyle}/>
-				<Settings  generalStyle={styles.generalStyle}/>
-				<MyCoordinator  generalStyle={styles.generalStyle}/>
-			</View>
+			<ImageBackground source={backgroundImage} style={styles.backgroundImage}>
+				<View style={styles.userRow}>
+					<Calendar style={styles.item}/>
+					<Flyers  style={styles.item}/>
+					<Settings  style={styles.item}/>
+					<MyCoordinator  style={styles.item}/>
+				</View>
+				{isManager === true &&
+					<View style={styles.managerRow}>
+						<EventCreator style={styles.item}/>
+						<FlyerCreator  style={styles.item}/>
+					</View>
+				}
 			</ImageBackground>
+
 		)
 	}
 }
@@ -39,15 +53,23 @@ const styles = StyleSheet.create({
 		justifyContent: 'center',
 		alignItems: 'center',
 	},
-	row: {
-		marginVertical: 200,
+	userRow: {
+		marginTop: 150,
 		flexDirection: 'row',
 		flex: 1,
 		justifyContent: 'center',
 		alignItems: 'center',
 		flexWrap: 'wrap',
 	},
-	generalStyle: {
+	managerRow: {
+		marginBottom: 100,
+		flexDirection: 'row',
+		flex: 1,
+		justifyContent: 'center',
+		alignItems: 'center',
+		flexWrap: 'wrap',
+	},
+	item: {
 		width: 180,
 		padding: 20,
 		fontSize: 16,
