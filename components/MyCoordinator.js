@@ -6,9 +6,9 @@ import textStyle from '../utils/textstyle'
 class MyCoordinator extends Component {
 
 	render() {
-		const { generalStyle } = this.props
+		const { style } = this.props
 		return (
-			<TouchableOpacity style={[styles.calendar, generalStyle]}>
+			<TouchableOpacity style={[styles.calendar, style]}>
 				<Ionicons name="ios-contact" size={40} color="blue"/>
 				<Text style={textStyle.main}>My Coordinator</Text>
 			</TouchableOpacity>

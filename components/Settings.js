@@ -5,9 +5,9 @@ import textStyle from '../utils/textstyle'
 
 class Settings extends Component {
 	render() {
-		const { generalStyle } = this.props
+		const { style } = this.props
 		return (
-			<TouchableOpacity style={[styles.calendar, generalStyle]}>
+			<TouchableOpacity style={[styles.calendar, style]}>
 				<Ionicons name="ios-settings" size={40} color="blue"/>
 				<Text style={textStyle.main}>Settings</Text>
 			</TouchableOpacity>
