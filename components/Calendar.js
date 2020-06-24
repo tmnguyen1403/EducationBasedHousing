@@ -5,9 +5,9 @@ import textStyle from '../utils/textstyle'
 
 class Calendar extends Component {
 	render() {
-		const { style } = this.props
+		const { style, navigate } = this.props
 		return (
-			<TouchableOpacity style={[styles.calendar, style]}>
+			<TouchableOpacity style={[styles.calendar, style]} onPress={() => navigate()}>
 				<FontAwesome name="calendar" size={40} color="blue"/>
 				<Text style={textStyle.main}>Calendar</Text>
 			</TouchableOpacity>

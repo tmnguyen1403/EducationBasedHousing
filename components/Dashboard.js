@@ -22,15 +22,15 @@ class Dashboard extends Component {
 		const ANNOUNCEMENTS = "Announcements"
 		const SETTINGS = "Settings"
 		const MY_COORDINATOR = "My Coordinator"
-		const calendarIcon = ``
 		const backgroundImage = require('../resources/images/background_image.jpg')
 		//save isManager into redux store
 		//const { isManager } = this.props
 		const isManager = true
+		const { navigation } = this.props
 		return (
 			<ImageBackground source={backgroundImage} style={styles.backgroundImage}>
 				<View style={styles.userRow}>
-					<Calendar style={styles.item}/>
+					<Calendar style={styles.item} navigate={() => navigation.navigate("CalendarScreen")}/>
 					<Flyers  style={styles.item}/>
 					<Settings  style={styles.item}/>
 					<MyCoordinator  style={styles.item}/>
