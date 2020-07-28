@@ -6,6 +6,7 @@ import { createStackNavigator } from '@react-navigation/stack'
 import Dashboard from './Dashboard'
 import SettingsScreen from './SettingsScreen'
 import CalendarScreen from './CalendarScreen'
+import Login from './Login'
 
 const Tab = createBottomTabNavigator()
 const Stack = createStackNavigator()
@@ -21,7 +22,8 @@ function DashboardStack() {
 export default function BottomTabNavigator() {
 	return (
 			<NavigationContainer>
-				<Tab.Navigator>
+				<Tab.Navigator initialRouteName="Dashboard">
+					<Tab.Screen name="Account" component={Login}/>
 					<Tab.Screen name="Dashboard" component={DashboardStack} />
 					<Tab.Screen name="Settings" component={SettingsScreen} />
 				</Tab.Navigator>

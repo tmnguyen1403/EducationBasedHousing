@@ -16,6 +16,9 @@ import EventCreator from './EventCreator'
 
 import createCustomText from './CustomText'
 
+//REDUX STATE
+import {connect} from 'react-redux'
+
 class Dashboard extends Component {
 	render() {
 		const CALENDAR = "Calendar"
@@ -25,8 +28,10 @@ class Dashboard extends Component {
 		const backgroundImage = require('../resources/images/background_image.jpg')
 		//save isManager into redux store
 		//const { isManager } = this.props
-		const isManager = true
-		const { navigation } = this.props
+
+		const { user, navigation } = this.props
+		const {admin} = user
+		console.log("Dashboard:", user)
 		return (
 			<ImageBackground source={backgroundImage} style={styles.backgroundImage}>
 				<View style={styles.userRow}>
@@ -35,7 +40,7 @@ class Dashboard extends Component {
 					<Settings  style={styles.item}/>
 					<MyCoordinator  style={styles.item}/>
 				</View>
-				{isManager === true &&
+				{admin > 0 &&
 					<View style={styles.managerRow}>
 						<EventCreator style={styles.item}/>
 						<FlyerCreator  style={styles.item}/>
@@ -81,4 +86,10 @@ const styles = StyleSheet.create({
 		height: null,
 	},
 })
-export default Dashboard
+
+function mapStateToProps(user) {
+	return {
+		user
+	}
+}
+export default connect(mapStateToProps)(Dashboard)

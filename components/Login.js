@@ -9,21 +9,46 @@ import {
  } from 'react-native'
 
 import createCustomText from './CustomText'
+//REDUX STATE
+import { connect } from 'react-redux'
+import { userLogin } from '../actions'
 
 class Login extends Component {
 	state = {
-		email: "Email...",
-		password: "Password..."
+		email: "admin",
+		password: "admin",
+		admin: true,
 	}
+
+	login() {
+		//DEFINE ADMIN: 3 levels
+		//0: normal user, cannot create events
+		//1: admin 1, can create events, cannot modify other events
+		//2: admin 2, has admin1 privileges, can modify other admins' events
+		this.props.dispatch(userLogin({email: "admin", password: "admin", admin: 1}))
+		// const { user } = this.props
+		// if (user !== {})
+		// 	console.log("login user:", user)
+		// const { navigation } = this.props
+		// if (email === valid_email && password === valid_password)
+		// 	navigation.navigate("Dashboard")
+		// else
+		// 	console.log("Wrong password")
+	}
+
 	render() {
 		const backgroundImage = require('../resources/images/background_image.jpg')
 		//save isManager into redux store
 		//const { isManager } = this.props
 		const isManager = true
-		const { navigation } = this.props
+		const {user, navigation } = this.props
+		if (user.id === 123) {
+			console.log(user)
+			navigation.navigate("Dashboard")
+		}
 		return (
 
-			<Fragment>
+			<View style={styles.container}>
 				<View style={[styles.inputView, styles.logo]}>
 						<Text style={[styles.text, styles.logoText]}>Education Based Housing</Text>
 				</View>
@@ -43,15 +68,20 @@ class Login extends Component {
 						 value={this.state.password}
 					 />
 				</View>
-				<TouchableOpacity style={styles.loginBtn}>
+				<TouchableOpacity style={styles.loginBtn} onPress={() => this.login()}>
 					<Text style={styles.loginText}>LOGIN</Text>
 				</TouchableOpacity>
-			</Fragment>
+			</View>
 		)
 	}
 }
 
 const styles = StyleSheet.create({
+	container: {
+		marginTop: 100,
+		justifyContent: "center",
+		alignItems: "center",
+	},
 	inputView: {
 		width: "80%",
 		height: 50,
@@ -95,4 +125,10 @@ const styles = StyleSheet.create({
 		fontSize: 20,
 	}
 })
-export default Login
+
+function mapStateToProps (user) {
+	return {
+		user
+	}
+}
+export default connect(mapStateToProps)(Login)
