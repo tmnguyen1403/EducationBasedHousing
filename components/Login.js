@@ -19,7 +19,6 @@ class Login extends Component {
 		password: "admin",
 		admin: true,
 	}
-
 	login() {
 		//DEFINE ADMIN: 3 levels
 		//0: normal user, cannot create events
@@ -126,9 +125,9 @@ const styles = StyleSheet.create({
 	}
 })
 
-function mapStateToProps (user) {
+function mapStateToProps (state) {
 	return {
-		user
+		user: state.user
 	}
 }
 export default connect(mapStateToProps)(Login)
