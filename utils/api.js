@@ -16,12 +16,14 @@ export function validateUser(user) {
 			username: "Admin",
 			password: "Admin",
 			admin: 1,
+			coordinator: "Admin",
 		},
 		456: {
 			id: 456,
 			username: "Minh",
 			password: "Minh",
 			admin: 0,
+			coordinator: "Bri Sandifer"
 		}
 	}
 	let {username, password} = user

@@ -21,7 +21,7 @@ import {connect} from 'react-redux'
 
 class Dashboard extends Component {
 	state = {
-		DEBUG: true,
+		DEBUG: false,
 	}
 	render() {
 		const CALENDAR = "Calendar"
@@ -42,7 +42,7 @@ class Dashboard extends Component {
 					<Settings  style={styles.item}/>
 					<MyCoordinator  style={styles.item}/>
 				</View>
-				{admin > 0 || this.state.DEBUG &&
+				{admin > 0 &&
 					<View style={styles.managerRow}>
 						<EventCreator style={styles.item}/>
 						<FlyerCreator  style={styles.item}/>

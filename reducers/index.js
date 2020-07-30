@@ -1,4 +1,4 @@
-import { RECEIVE_USER, USER_LOGIN, RECEIVE_EVENTS } from '../actions'
+import { RECEIVE_USER, USER_LOGIN, RECEIVE_EVENTS, CREATE_EVENT } from '../actions'
 import { combineReducers } from 'redux'
 
 function user (state = {}, action) {
@@ -28,6 +28,12 @@ export function events(state = {}, action) {
 			return {
 				...state,
 				...action.events
+			}
+		case CREATE_EVENT:
+			console.log("create event")
+			return {
+				...state,
+				...action.event,
 			}
 		default:
 			return state
