@@ -15,8 +15,8 @@ import { userLogin } from '../actions'
 
 class Login extends Component {
 	state = {
-		email: "admin",
-		password: "admin",
+		email: "Username*",
+		password: "Password*",
 		admin: true,
 	}
 	login() {
@@ -54,7 +54,7 @@ class Login extends Component {
 				<View style={[styles.inputView]}>
 						<TextInput
 						 style={styles.inputText}
-						 placeholder="Email..."
+						 placeholder="Username*"
 						 onChangeText={text => this.setState({email: text})}
 						 value={this.state.email}
 					 />
@@ -62,29 +62,34 @@ class Login extends Component {
 				<View style={[styles.inputView]}>
 						<TextInput
 						 style={styles.inputText}
-						 placeholder="Email..."
+						 placeholder="Password*"
 						 onChangeText={text => this.setState({password: text})}
 						 value={this.state.password}
 					 />
 				</View>
+				<TouchableOpacity style={styles.forgetPass} onPress={() => this.login()}>
+					<Text style={styles.forgetText}>Forget password?</Text>
+				</TouchableOpacity>
 				<TouchableOpacity style={styles.loginBtn} onPress={() => this.login()}>
-					<Text style={styles.loginText}>LOGIN</Text>
+					<Text style={styles.loginText}>Sign In</Text>
 				</TouchableOpacity>
 			</View>
 		)
 	}
 }
-
+//colors: light blue #7d90c7, grey: #dadfed
 const styles = StyleSheet.create({
 	container: {
-		marginTop: 100,
+		marginTop: 5,
 		justifyContent: "center",
 		alignItems: "center",
+		backgroundColor: "#dadfed",
+		height: "100%",
 	},
 	inputView: {
 		width: "80%",
 		height: 50,
-		backgroundColor: "#465881",
+		backgroundColor: "white",
 		borderRadius: 25,
 		marginBottom:20,
 		justifyContent:"center",
@@ -93,12 +98,26 @@ const styles = StyleSheet.create({
 	},
 	inputText: {
 		height: 50,
-		color: "white",
+		color: "black",
 		margin: 20,
+	},
+	forgetPass: {
+		width: "80%",
+		height: 50,
+		borderRadius: 25,
+		height: 50,
+		marginTop: 5,
+		marginBottom: 10,
+		alignItems: "center",
+		justifyContent: "center",
+	},
+	forgetText: {
+		color: "#7691de",
+		fontSize: 20,
 	},
 	loginBtn: {
 		width: "80%",
-		backgroundColor: "#fb5b5a",
+		backgroundColor: "#7d90c7",
 		height: 50,
 		borderRadius: 25,
 		height: 50,
@@ -108,7 +127,7 @@ const styles = StyleSheet.create({
 		justifyContent: "center",
 	},
 	logo: {
-		backgroundColor: "#fb5b5a",
+		backgroundColor: "#7d90c7",
 		height: 100,
 		marginBottom: 40,
 	},
@@ -118,7 +137,7 @@ const styles = StyleSheet.create({
 	},
 	loginText: {
 		color: "white",
-		fontSize: 11,
+		fontSize: 20,
 	},
 	logoText: {
 		fontSize: 20,

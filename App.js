@@ -31,9 +31,5 @@ const styles = StyleSheet.create({
 		justifyContent: "center",
 		width: null,
 		height: null,
-	},
-	login: {
-		justifyContent: "center",
-		alignItems: "center",
 	}
 })
