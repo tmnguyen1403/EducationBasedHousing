@@ -13,6 +13,7 @@ import MyCoordinator from './MyCoordinator'
 import Settings from './Settings'
 import FlyerCreator from './FlyerCreator'
 import EventCreator from './EventCreator'
+import UserCreator from './UserCreator'
 
 import createCustomText from './CustomText'
 
@@ -54,6 +55,7 @@ class Dashboard extends Component {
 					<View style={styles.managerRow}>
 						<EventCreator style={styles.item}/>
 						<FlyerCreator  style={styles.item}/>
+						<UserCreator style={styles.item}/>
 					</View>
 				}
 				<TouchableOpacity style={[styles.item, styles.logout]} onPress={() => this.logout()}>
@@ -80,7 +82,7 @@ const styles = StyleSheet.create({
 		flexWrap: 'wrap',
 	},
 	managerRow: {
-		marginBottom: 100,
+		marginBottom: 20,
 		flexDirection: 'row',
 		flex: 1,
 		justifyContent: 'center',
@@ -88,6 +90,7 @@ const styles = StyleSheet.create({
 		flexWrap: 'wrap',
 	},
 	item: {
+		margin: 5,
 		width: 180,
 		padding: 20,
 		fontSize: 16,
