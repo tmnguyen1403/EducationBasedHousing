@@ -1,11 +1,13 @@
 import React, { useState } from "react";
 import { View, Picker, StyleSheet, Text, Fragment } from "react-native";
 
-const DatePicker = ({visible}) => {
+const DatePicker = ({visible, getValue}) => {
 
-  const [selectedValue, setSelectedValue] = useState("jan");
-	if (!visible)
+	if (!visible) {
+		console.log("hello datepicker")
 		return null
+	}
+	const [selectedValue, setSelectedValue] = useState("");
 	let dates = () => {
 		let diff = new Date() - new Date(0)
 		let items = []
@@ -19,7 +21,10 @@ const DatePicker = ({visible}) => {
       <Picker
         selectedValue={selectedValue}
         style={styles.picker}
-        onValueChange={(itemValue, itemIndex) => setSelectedValue(itemValue)}
+        onValueChange={(itemValue, itemIndex) => {
+					setSelectedValue(itemValue)
+					getValue(itemValue)
+				}}
 				mode="dialog"
       >
 			{ dates().map(value =>

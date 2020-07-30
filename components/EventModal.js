@@ -8,17 +8,54 @@ import {Text,
 	TouchableOpacity} from 'react-native'
 //custom components
 import DatePicker from './DatePicker'
+import TimePicker from './TimePicker'
+//REDUX STORE
+import {connect} from 'react-redux'
+//action
+import {createEvent} from '../actions'
+import { CALENDAR_STORAGE_KEY} from '../utils/calendar'
+import { AsyncStorage } from 'react-native'
 
-export default class EventModal extends Component {
+class EventModal extends Component {
 	state = {
 		showDatePicker: false,
 		showTimePicker: false,
+		title: "This is new event",
+		location: "Education Based Housing",
+		description: "Hello",
+		date: "",
+		start: "3:00 PM",
+		end: "4:00PM",
 	}
   closeModal() {
     this.props.hideModal();
   }
 	createEvent() {
+		//send new events to database
+		//add new events to redux store
+		const {title, location, description, date, start, end} = this.state
+		const data = {[this.state.date] : {
+			name: this.state.title,
+			location: this.state.location,
+			description: this.state.description,
+			date: this.state.date,
+			start: this.state.start,
+			end: this.state.end,
+		}}
+		//AsyncStorage.setItem(CALENDAR_STORAGE_KEY, JSON.stringify(data))
+		this.props.dispatch(createEvent(data))
+		this.props.hideModal();
 		return true
+	}
+	//get selected date from date picker
+	getDate(value) {
+		console.log("getDate:", value)
+		this.setState({date: value})
+	}
+	getTime(value) {
+		console.log("getDate:", value)
+		//this.setState({start: value})
+		//this.setState({end: value})
 	}
 	toggleDatePicker() {
 		this.setState({showDatePicker: !this.state.showDatePicker})
@@ -27,10 +64,10 @@ export default class EventModal extends Component {
 		this.setState({showTimePicker: !this.state.showTimePicker})
 	}
   render() {
-		const {visible} = this.props
+		const {visible, events} = this.props
 		if (!visible)
 			return null
-
+		console.log("event modal:", events)
     return (
         <View style={styles.container}>
           <Modal
@@ -60,18 +97,24 @@ export default class EventModal extends Component {
 								<Text style={styles.label}>Title</Text>
 								<TextInput
 									style={styles.textInput}
-									placeholder="Title"/>
+									placeholder="Title"
+									value={this.state.title}
+									onChange={(text) => this.setState({title: text})}/>
 							</View>
 							<View style={styles.item}>
 								<Text style={styles.label}>Location</Text>
 								<TextInput
 									style={styles.textInput}
+									value={this.state.location}
+									onChange={(text) => this.setState({location: text})}
 									placeholder="Location"/>
 							</View>
 							<View style={styles.item}>
 								<Text style={styles.label}>Description</Text>
 								<TextInput
 									style={styles.textInput}
+									value={this.state.description}
+									onChange={(text) => this.setState({description: text})}
 									placeholder="Description"/>
 							</View>
 
@@ -82,10 +125,18 @@ export default class EventModal extends Component {
 
 							<TouchableOpacity style={styles.item}
 								onPress={() => this.toggleTimePicker()}>
-								<Text style={styles.label}>Time</Text>
+								<Text style={styles.label}>Start</Text>
 							</TouchableOpacity>
-							<DatePicker visible={this.state.showDatePicker}/>
-							<DatePicker visible={this.state.showTimePicker}/>
+							<TouchableOpacity style={styles.item}
+								onPress={() => this.toggleTimePicker()}>
+								<Text style={styles.label}>End</Text>
+							</TouchableOpacity>
+							<DatePicker visible={this.state.showDatePicker}
+								getValue={(value) => this.getDate(value)}/>
+							<TimePicker
+								visible={this.state.showTimePicker}
+								getValue={(value) => this.getTime(value)}
+							/>
 						</View>
 
           </Modal>
@@ -138,6 +189,7 @@ const styles = StyleSheet.create({
 	item: {
 		flex: 1,
 		marginTop: 20,
+		marginBottom: 10,
 		padding: 10,
 		flexDirection: "row",
 		flexWrap: "wrap",
@@ -151,3 +203,10 @@ const styles = StyleSheet.create({
 		fontSize: 16,
 	},
 });
+
+function mapStateToProps(state) {
+	return {
+		events: state.events
+	}
+}
+export default connect(mapStateToProps)(EventModal)

@@ -6,7 +6,7 @@ import EventModal from './EventModal'
 
 class EventCreator extends Component {
 	state = {
-		showModal: true
+		showModal: false
 	}
 	toggleModal() {
 		this.setState({showModal: !this.state.showModal})
