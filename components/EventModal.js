@@ -7,7 +7,7 @@ import {Text,
 	TextInput,
 	TouchableOpacity} from 'react-native'
 //custom components
-import MonthPicker from './MonthPicker'
+import DatePicker from './DatePicker'
 
 export default class EventModal extends Component {
 	state = {
@@ -84,8 +84,8 @@ export default class EventModal extends Component {
 								onPress={() => this.toggleTimePicker()}>
 								<Text style={styles.label}>Time</Text>
 							</TouchableOpacity>
-							<MonthPicker visible={this.state.showDatePicker}/>
-							<MonthPicker visible={this.state.showTimePicker}/>
+							<DatePicker visible={this.state.showDatePicker}/>
+							<DatePicker visible={this.state.showTimePicker}/>
 						</View>
 
           </Modal>

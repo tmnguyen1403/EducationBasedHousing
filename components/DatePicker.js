@@ -1,10 +1,20 @@
 import React, { useState } from "react";
 import { View, Picker, StyleSheet, Text, Fragment } from "react-native";
 
-const MonthPicker = ({visible}) => {
+const DatePicker = ({visible}) => {
+
   const [selectedValue, setSelectedValue] = useState("jan");
 	if (!visible)
 		return null
+	let dates = () => {
+		let diff = new Date() - new Date(0)
+		let items = []
+		for (let index = 0; index < 20; ++index) {
+			let date = new Date(diff + index * 24 * 3600 * 1000)
+			items.push(date)
+		}
+		return items
+	}
   return (
       <Picker
         selectedValue={selectedValue}
@@ -12,9 +22,12 @@ const MonthPicker = ({visible}) => {
         onValueChange={(itemValue, itemIndex) => setSelectedValue(itemValue)}
 				mode="dialog"
       >
-        <Picker.Item label="Jan" value="jan" />
-        <Picker.Item label="Feb" value="feb" />
-				<Picker.Item label="Mar" value="mar" />
+			{ dates().map(value =>
+				<Picker.Item
+				key={value.toDateString()}
+				label={value.toDateString() === (new Date()).toDateString() ? "Today" : value.toDateString()}
+				value={value.toLocaleString().split(",")[0]}/>)
+			}
       </Picker>
   );
 }
@@ -30,4 +43,4 @@ const styles = StyleSheet.create({
 	}
 });
 
-export default MonthPicker;
+export default DatePicker;
