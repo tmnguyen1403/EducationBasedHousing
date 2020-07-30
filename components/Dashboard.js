@@ -18,10 +18,17 @@ import createCustomText from './CustomText'
 
 //REDUX STATE
 import {connect} from 'react-redux'
+import {userLogout} from '../actions'
 
 class Dashboard extends Component {
 	state = {
 		DEBUG: false,
+	}
+	logout() {
+		console.log("User logout")
+
+		this.props.dispatch(userLogout())
+		this.props.navigation.navigate("Login")
 	}
 	render() {
 		const CALENDAR = "Calendar"
@@ -41,6 +48,7 @@ class Dashboard extends Component {
 					<Flyers  style={styles.item}/>
 					<Settings  style={styles.item}/>
 					<MyCoordinator  style={styles.item}/>
+
 				</View>
 				{admin > 0 &&
 					<View style={styles.managerRow}>
@@ -48,6 +56,9 @@ class Dashboard extends Component {
 						<FlyerCreator  style={styles.item}/>
 					</View>
 				}
+				<TouchableOpacity style={[styles.item, styles.logout]} onPress={() => this.logout()}>
+					<Text>Logout</Text>
+				</TouchableOpacity>
 			</ImageBackground>
 
 		)
@@ -87,6 +98,12 @@ const styles = StyleSheet.create({
 		width: null,
 		height: null,
 	},
+	logout: {
+		backgroundColor: 'white',
+		margin: 10,
+		justifyContent: 'center',
+		alignItems: 'center'
+	}
 })
 
 function mapStateToProps(state) {

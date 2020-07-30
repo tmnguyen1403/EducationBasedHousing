@@ -1,4 +1,6 @@
-import { RECEIVE_USER, USER_LOGIN, RECEIVE_EVENTS, CREATE_EVENT } from '../actions'
+import {
+		RECEIVE_USER, USER_LOGIN, USER_LOGOUT,
+	 	RECEIVE_EVENTS, CREATE_EVENT } from '../actions'
 import { combineReducers } from 'redux'
 
 function user (state = {}, action) {
@@ -14,9 +16,13 @@ function user (state = {}, action) {
 			// console.log("test spread1: ", {...action.user})
 			return {
 				...state,
-				id: 123,
 				...action.user,
 			}
+		case USER_LOGOUT:
+			// console.log("user login", action)
+			// console.log("test spread: ", {...action.user})
+			// console.log("test spread1: ", {...action.user})
+			return {}
 		default:
 			return state
 	}
