@@ -22,8 +22,8 @@ function DashboardStack() {
 export default function BottomTabNavigator() {
 	return (
 			<NavigationContainer>
-				<Tab.Navigator initialRouteName="Dashboard">
-					<Tab.Screen name="Account" component={Login}/>
+				<Tab.Navigator initialRouteName="Login">
+					<Tab.Screen name="Login" component={Login}/>
 					<Tab.Screen name="Dashboard" component={DashboardStack} />
 					<Tab.Screen name="Settings" component={SettingsScreen} />
 				</Tab.Navigator>

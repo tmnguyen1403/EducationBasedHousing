@@ -31,7 +31,6 @@ class Dashboard extends Component {
 
 		const { user, navigation } = this.props
 		const {admin} = user
-		console.log("Dashboard:", user)
 		return (
 			<ImageBackground source={backgroundImage} style={styles.backgroundImage}>
 				<View style={styles.userRow}>
@@ -87,9 +86,9 @@ const styles = StyleSheet.create({
 	},
 })
 
-function mapStateToProps(user) {
+function mapStateToProps(state) {
 	return {
-		user
+		user: state.user
 	}
 }
 export default connect(mapStateToProps)(Dashboard)

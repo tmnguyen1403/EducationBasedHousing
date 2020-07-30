@@ -20,8 +20,9 @@ function setDummyData () {
     dummyData[strTime] = {
           name: "Testing Event",
 					location: "Education Based Housing",
-					date: "01/01/2020",
-					time: "10:00AM",
+					date: "07/29/2020",
+					start: "11:00 AM",
+					end: "12:00 PM",
         }
   }
 
