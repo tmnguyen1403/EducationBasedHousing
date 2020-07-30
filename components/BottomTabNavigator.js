@@ -19,6 +19,7 @@ function DashboardStack() {
 		</Stack.Navigator>
 	)
 }
+
 export default function BottomTabNavigator() {
 	return (
 			<NavigationContainer>

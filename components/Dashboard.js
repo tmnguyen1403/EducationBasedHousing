@@ -20,6 +20,9 @@ import createCustomText from './CustomText'
 import {connect} from 'react-redux'
 
 class Dashboard extends Component {
+	state = {
+		DEBUG: true,
+	}
 	render() {
 		const CALENDAR = "Calendar"
 		const ANNOUNCEMENTS = "Announcements"
@@ -39,7 +42,7 @@ class Dashboard extends Component {
 					<Settings  style={styles.item}/>
 					<MyCoordinator  style={styles.item}/>
 				</View>
-				{admin > 0 &&
+				{admin > 0 || this.state.DEBUG &&
 					<View style={styles.managerRow}>
 						<EventCreator style={styles.item}/>
 						<FlyerCreator  style={styles.item}/>
