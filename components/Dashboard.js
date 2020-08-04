@@ -34,6 +34,10 @@ class Dashboard extends Component {
 		this.props.dispatch(userLogout())
 		this.props.navigation.goBack()
 	}
+	toCalendar(community, token) {
+		const { navigation } = this.props
+		navigation.navigate("CalendarScreen", {communityId: community._id, token: token})
+	}
 	render() {
 		const CALENDAR = "Calendar"
 		const ANNOUNCEMENTS = "Announcements"
@@ -48,18 +52,18 @@ class Dashboard extends Component {
 		let community = []
 		if (user && user.user) {
 			admin = user.user.admin
+			token = user.token
 		}
 		if (route) {
-			console.log(route)
-			community = [0, "conroe"]
+			community = route.params.community
 		}
 		return (
 			<ImageBackground source={backgroundImage} style={styles.backgroundImage}>
 				<View style={styles.welcomeRow}>
-					<Text style={styles.welcomeText}>Hello {community[1]}</Text>
+					<Text style={styles.welcomeText}>Hello {community.name}</Text>
 				</View>
 				<View style={styles.userRow}>
-					<Calendar style={styles.item} navigate={() => navigation.navigate("CalendarScreen")}/>
+					<Calendar style={styles.item} navigate={() => this.toCalendar(community, token)}/>
 					<Flyers  style={styles.item}/>
 					<Settings  style={styles.item}/>
 					<MyCoordinator  style={styles.item}/>

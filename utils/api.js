@@ -1,35 +1,52 @@
-import { AsyncStorage } from 'react-native'
-import { CALENDAR_STORAGE_KEY, formatCalendarEvents } from './calendar'
+import { userLogin, receiveEvents } from '../actions'
 
-export function fetchCalendarEvents() {
-	AsyncStorage.getAllKeys((err, keys) => {
-		keys.map(key => AsyncStorage.removeItem(key))
+export const validateUser = async (user, dispatch) => {
+	const url = "http://localhost:3000/api/user/login"
+
+	const response = await fetch(url, {
+		method: 'POST',
+		headers: {
+			Accept: 'application/json',
+			'Content-Type': 'application/json',
+		},
+		body: JSON.stringify({
+			username: user.username,
+			password: user.password,
+		})
 	})
-	return AsyncStorage.getItem(CALENDAR_STORAGE_KEY)
-		.then(formatCalendarEvents)
+	const json = await response.json()
+	console.log("Login ",json)
+	if (!json.success)
+		throw new Error(json.error)
+	else {
+		dispatch(userLogin(json))
+		return json
+	}
 }
 
-export function validateUser(user) {
-	let users = {
-		123: {
-			id: 123,
-			username: "Admin",
-			password: "Admin",
-			admin: 1,
-			coordinator: "Admin",
-		},
-		456: {
-			id: 456,
-			username: "Minh",
-			password: "Minh",
-			admin: 0,
-			coordinator: "Bri Sandifer"
-		}
-	}
-	let {username, password} = user
-	let valid_user = Object.values(users).filter(user => {
-		return user.username === username && user.password === password
-	})
-	console.log("Valid User", valid_user)
-	return valid_user.length > 0 ? valid_user[0] : {}
+export function fetchCalendarEvents(communityId, token, dispatch) {
+		const url = "http://localhost:3000/api/event/get"
+		console.log("fetchEvent", communityId)
+		console.log("token", token)
+		fetch(url, {
+			method: "GET",
+			headers: {
+				accept: 'application/json',
+				'Content-Type': 'application/json',
+				token: token,
+				communityid: communityId,
+			}
+		})
+		.then(result => result.json())
+		.then(json => {
+			if (!json.success)
+				throw new Error(json.error)
+			else {
+				console.log("Event", json.events)
+				dispatch(receiveEvents(json.events))
+			}
+		})
+		.catch(error => {
+			console.log("Error getting event", error.message)
+		})
 }

@@ -28,31 +28,18 @@ class Login extends Component {
 		//0: normal user, cannot create events
 		//1: admin 1, can create events, cannot modify other events
 		//2: admin 2, has admin1 privileges, can modify other admins' events
-		const url = "http://localhost:3000/api/user/login"
 		const username = this.state.username.toLowerCase()
 		const password = this.state.password
-		fetch(url, {
-			method: 'POST',
-			headers: {
-				Accept: 'application/json',
-				'Content-Type': 'application/json',
-			},
-			body: JSON.stringify({
-				username: username,
-				password: password,
-			})
-		}).then(response => response.json())
-		.then(json => {
-			if (json.success === false)
-				throw new Error(json.error)
-			this.props.dispatch(userLogin(json))
+		validateUser({username, password}, this.props.dispatch)
+		.then(result => {
 			const {navigation } = this.props
-			navigation.navigate("Dashboard", {screen: "Dashboard", community: json.communities[0], names: ["hello route"]})
+			navigation.navigate("Dashboard",
+				{community: result.communities[0]})
 		})
 		.catch(error => {
-			console.log("Error when login", error.message)
-			this.setState({loginFailed: true, errorMessage: error.message})
-		})
+				console.log("Error when login", error.message)
+				this.setState({loginFailed: true, errorMessage: error.message})
+			})
 	}
 	hideModal() {
 		this.setState({loginFailed: false})

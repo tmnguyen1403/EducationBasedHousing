@@ -9,13 +9,10 @@ import EventView from './EventView'
 
 class CalendarScreen extends Component {
 	componentDidMount() {
-		const { events, dispatch } = this.props
+		const {route, dispatch} = this.props
 		console.log("calendar screen did mount")
-		if (Object.keys(events).length === 0) {
-			console.log("fetch events")
-			fetchCalendarEvents()
-				.then( (events) => dispatch(receiveEvents(events)))
-		}
+		const {communityId, token} = route.params
+		fetchCalendarEvents(communityId, token, dispatch)
 	}
 	render() {
 		const {events} = this.props
