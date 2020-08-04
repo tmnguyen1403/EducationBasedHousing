@@ -21,25 +21,38 @@ class Login extends Component {
 		username: "Username*",
 		password: "Password*",
 		loginFailed: false,
-		loginFailedMessage: "Your password or username is incorrect",
+		errorMessage: "Your password or username is incorrect",
 	}
 	login() {
 		//DEFINE ADMIN: 3 levels
 		//0: normal user, cannot create events
 		//1: admin 1, can create events, cannot modify other events
 		//2: admin 2, has admin1 privileges, can modify other admins' events
-
-
-		const valid_user = validateUser({
-			username: this.state.username,
-			password: this.state.password}
-		)
-		if (!valid_user.hasOwnProperty("id"))
-			this.setState({loginFailed: true})
-		else {
-			this.setState({loginFailed: false})
-			this.props.dispatch(userLogin(valid_user))
-		}
+		const url = "http://localhost:3000/api/user/login"
+		const username = this.state.username.toLowerCase()
+		const password = this.state.password
+		fetch(url, {
+			method: 'POST',
+			headers: {
+				Accept: 'application/json',
+				'Content-Type': 'application/json',
+			},
+			body: JSON.stringify({
+				username: username,
+				password: password,
+			})
+		}).then(response => response.json())
+		.then(json => {
+			if (json.success === false)
+				throw new Error(json.error)
+			this.props.dispatch(userLogin(json))
+			const {navigation } = this.props
+			navigation.navigate("Dashboard", {screen: "Dashboard", community: json.communities[0], names: ["hello route"]})
+		})
+		.catch(error => {
+			console.log("Error when login", error.message)
+			this.setState({loginFailed: true, errorMessage: error.message})
+		})
 	}
 	hideModal() {
 		this.setState({loginFailed: false})
@@ -49,12 +62,6 @@ class Login extends Component {
 		//save isManager into redux store
 		//const { isManager } = this.props
 		const isManager = true
-		const {user, navigation } = this.props
-
-		if (user.hasOwnProperty("id")) {
-			console.log(user)
-			navigation.navigate("Dashboard")
-		}
 
 		return (
 			<View style={styles.container}>
@@ -66,7 +73,6 @@ class Login extends Component {
 						 style={styles.inputText}
 						 placeholder="Username*"
 						 onChangeText={text => this.setState({username: text})}
-
 					 />
 				</View>
 				<View style={[styles.inputView]}>
@@ -77,12 +83,7 @@ class Login extends Component {
 					 />
 				</View>
 				{this.state.loginFailed &&
-					<Text style={styles.warningText}>{this.state.loginFailedMessage}</Text>
-					// <WarningModal
-					// 	visible={this.state.loginFailed}
-					// 	hideModal={() => this.hideModal()}
-					// 	message= {this.state.loginFailedMessage}
-					// 	/>
+					<Text style={styles.warningText}>{this.state.errorMessage}</Text>
 				}
 				<TouchableOpacity style={styles.forgetPass} onPress={() => this.login()}>
 
@@ -91,6 +92,7 @@ class Login extends Component {
 				<TouchableOpacity style={styles.loginBtn} onPress={() => this.login()}>
 					<Text style={styles.loginText}>Sign In</Text>
 				</TouchableOpacity>
+
 			</View>
 		)
 	}

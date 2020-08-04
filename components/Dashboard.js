@@ -25,11 +25,14 @@ class Dashboard extends Component {
 	state = {
 		DEBUG: false,
 	}
+	componentDidMount(){
+		console.log("Dashboard is mounted")
+	}
 	logout() {
 		console.log("User logout")
 
 		this.props.dispatch(userLogout())
-		this.props.navigation.navigate("Login")
+		this.props.navigation.goBack()
 	}
 	render() {
 		const CALENDAR = "Calendar"
@@ -40,10 +43,21 @@ class Dashboard extends Component {
 		//save isManager into redux store
 		//const { isManager } = this.props
 
-		const { user, navigation } = this.props
-		const {admin} = user
+		const { user, navigation, route } = this.props
+		let admin = 0
+		let community = []
+		if (user && user.user) {
+			admin = user.user.admin
+		}
+		if (route) {
+			console.log(route)
+			community = [0, "conroe"]
+		}
 		return (
 			<ImageBackground source={backgroundImage} style={styles.backgroundImage}>
+				<View style={styles.welcomeRow}>
+					<Text style={styles.welcomeText}>Hello {community[1]}</Text>
+				</View>
 				<View style={styles.userRow}>
 					<Calendar style={styles.item} navigate={() => navigation.navigate("CalendarScreen")}/>
 					<Flyers  style={styles.item}/>
@@ -106,6 +120,11 @@ const styles = StyleSheet.create({
 		margin: 10,
 		justifyContent: 'center',
 		alignItems: 'center'
+	},
+	welcomeText: {
+		color: "white",
+		fontSize: 30,
+		textAlign: "center",
 	}
 })
 
