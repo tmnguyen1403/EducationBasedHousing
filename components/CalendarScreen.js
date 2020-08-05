@@ -16,11 +16,17 @@ class CalendarScreen extends Component {
 	}
 	render() {
 		const {events} = this.props
-		console.log("calendar screen", Object.keys(events))
+		console.log("calendar screen", events)
+		if (events.length === 0)
+			return (
+				<View style = {styles.container}>
+					<Text> There is no event in the community</Text>
+				</View>
+			)
 		return (
 			<ScrollView style={styles.container}>
-				{events !== undefined && events !== {} &&
-					Object.entries(events).map((data) => <EventView key={data[0]} event={data[1]}/>)
+				{events.length > 0 &&
+					events.map(event => <EventView key={event._id} event={event}/>)
 				}
 			</ScrollView>
 		)

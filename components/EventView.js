@@ -22,6 +22,7 @@ function getWeekDay(date)
 
 export default function EventView({event})
 {
+	console.log("EventView ",event)
 	const date = new Date(event.date)
 	const month = getMonthInEnglish(date)
 	const day = date.getDate()

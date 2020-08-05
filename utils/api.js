@@ -1,7 +1,10 @@
-import { userLogin, receiveEvents } from '../actions'
+import { userLogin, receiveEvents, createEvent } from '../actions'
+
+const URL = "http://localhost:3000/api/"
 
 export const validateUser = async (user, dispatch) => {
-	const url = "http://localhost:3000/api/user/login"
+	const path = "user/login"
+	const url = URL + path
 
 	const response = await fetch(url, {
 		method: 'POST',
@@ -25,28 +28,50 @@ export const validateUser = async (user, dispatch) => {
 }
 
 export function fetchCalendarEvents(communityId, token, dispatch) {
-		const url = "http://localhost:3000/api/event/get"
-		console.log("fetchEvent", communityId)
-		console.log("token", token)
-		fetch(url, {
-			method: "GET",
-			headers: {
-				accept: 'application/json',
-				'Content-Type': 'application/json',
-				token: token,
-				communityid: communityId,
-			}
-		})
-		.then(result => result.json())
-		.then(json => {
-			if (!json.success)
-				throw new Error(json.error)
-			else {
-				console.log("Event", json.events)
-				dispatch(receiveEvents(json.events))
-			}
-		})
-		.catch(error => {
-			console.log("Error getting event", error.message)
-		})
+	const path = "event/get"
+	const url = URL + path
+	console.log("fetchEvent for community:", communityId)
+	console.log("token", token)
+	fetch(url, {
+		method: "GET",
+		headers: {
+			accept: 'application/json',
+			'Content-Type': 'application/json',
+			token: token,
+			communityid: communityId,
+		}
+	})
+	.then(result => result.json())
+	.then(json => {
+		if (!json.success)
+			throw new Error(json.error)
+		else {
+			console.log("fetchEvent successfully", json.events)
+			dispatch(receiveEvents(json.events))
+		}
+	})
+	.catch(error => {
+		console.log("Error getting event", error.message)
+	})
+}
+
+export const fetchCreateEvent = async (newEvent, token, dispatch) => {
+	const path = "event/create"
+	const url = URL + path
+	console.log("fetchCreateEvent")
+	const result = await fetch(url, {
+		method: "POST",
+		headers: {
+			accept: 'application/json',
+			'Content-Type': 'application/json',
+			token: token
+		},
+		body: JSON.stringify(newEvent)
+	})
+	const json = await result.json()
+	if (!json.success)
+		throw new Error(json.error)
+	else {
+		console.log("FetchCreateEvent successfully")
+	}
 }

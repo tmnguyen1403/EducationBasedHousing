@@ -2,7 +2,6 @@ export const RECEIVE_USER = 'RECEIVE_USER'
 export const USER_LOGIN = 'USER_LOGIN'
 export const USER_LOGOUT = 'USER_LOGOUT'
 export const RECEIVE_EVENTS = 'RECEIVE_EVENTS'
-export const CREATE_EVENT = 'CREATE_EVENT'
 export const RECEIVE_COMMUNITIES = 'RECEIVE_COMMUNITIES'
 export const CHANGE_COMMUNITY = 'CHANGE_COMMUNITY'
 
@@ -20,13 +19,6 @@ export function receiveEvents (events) {
 	}
 }
 
-export function createEvent(event) {
-	console.log("create event:", event)
-	return {
-		type: CREATE_EVENT,
-		event,
-	}
-}
 export function userLogin (user) {
 	return {
 		type: USER_LOGIN,

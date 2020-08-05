@@ -13,19 +13,20 @@ import TimePicker from './TimePicker'
 import {connect} from 'react-redux'
 //action
 import {createEvent} from '../actions'
-import { CALENDAR_STORAGE_KEY} from '../utils/calendar'
+import { fetchCreateEvent } from '../utils/api'
 import { AsyncStorage } from 'react-native'
 
 class EventModal extends Component {
 	state = {
 		showDatePicker: false,
-		showTimePicker: false,
-		title: "This is new event",
+		showStartPicker: false,
+		showEndPicker: false,
+		name: "This is new event",
 		location: "Education Based Housing",
 		description: "Hello",
 		date: "",
-		start: "3:00 PM",
-		end: "4:00PM",
+		start: "",
+		end: "",
 	}
   closeModal() {
     this.props.hideModal();
@@ -33,40 +34,54 @@ class EventModal extends Component {
 	createEvent() {
 		//send new events to database
 		//add new events to redux store
-		const {title, location, description, date, start, end} = this.state
-		const data = {[this.state.date] : {
-			name: this.state.title,
-			location: this.state.location,
-			description: this.state.description,
-			date: this.state.date,
-			start: this.state.start,
-			end: this.state.end,
-		}}
-		this.props.dispatch(createEvent(data))
-		this.props.hideModal();
+		const {name, location, description, date, start, end} = this.state
+		const { communities, token, dispatch, hideModal } = this.props
+		const communityId = communities.data[communities.chosenIndex]._id
+		const newEvent = {
+			name: name,
+			location: location,
+			description: description,
+			date: date,
+			start: start,
+			end: end,
+			communityid: communityId
+		}
+		fetchCreateEvent(newEvent, token, dispatch)
+		.then(() => {
+			console.log("Create new event successfully")
+			hideModal()
+		})
+		.catch(error => {
+			console.log("Error create event", error.message)
+		})
 		return true
 	}
 	//get selected date from date picker
 	getDate(value) {
-		console.log("getDate:", value)
 		this.setState({date: value})
 	}
-	getTime(value) {
-		console.log("getDate:", value)
-		//this.setState({start: value})
-		//this.setState({end: value})
+	getStart(start) {
+		console.log("called getStart")
+		this.setState({start: start})
+	}
+	getEnd(end) {
+		console.log("called getEnd")
+
+		this.setState({end: end})
 	}
 	toggleDatePicker() {
 		this.setState({showDatePicker: !this.state.showDatePicker})
 	}
-	toggleTimePicker() {
-		this.setState({showTimePicker: !this.state.showTimePicker})
+	toggleStartPicker() {
+		this.setState({showStartPicker: !this.state.showStartPicker})
+	}
+	toggleEndPicker() {
+		this.setState({showEndPicker: !this.state.showEndPicker})
 	}
   render() {
 		const {visible, events} = this.props
 		if (!visible)
 			return null
-		console.log("event modal:", events)
     return (
         <View style={styles.container}>
           <Modal
@@ -97,15 +112,15 @@ class EventModal extends Component {
 								<TextInput
 									style={styles.textInput}
 									placeholder="Title"
-									value={this.state.title}
-									onChange={(text) => this.setState({title: text})}/>
+									value={this.state.name}
+									onChangeText={(name) => this.setState({name})}/>
 							</View>
 							<View style={styles.item}>
 								<Text style={styles.label}>Location</Text>
 								<TextInput
 									style={styles.textInput}
 									value={this.state.location}
-									onChange={(text) => this.setState({location: text})}
+									onChangeText={(location) => this.setState({location})}
 									placeholder="Location"/>
 							</View>
 							<View style={styles.item}>
@@ -113,29 +128,46 @@ class EventModal extends Component {
 								<TextInput
 									style={styles.textInput}
 									value={this.state.description}
-									onChange={(text) => this.setState({description: text})}
+									onChangeText={(description) => this.setState({description})}
 									placeholder="Description"/>
 							</View>
 
 							<TouchableOpacity style={styles.item}
 								onPress={() => this.toggleDatePicker()}>
 								<Text style={styles.label}>Date</Text>
+								<TextInput
+									style={styles.textInput}
+									value={this.state.date}
+									placeholder="Date"/>
 							</TouchableOpacity>
 
 							<TouchableOpacity style={styles.item}
-								onPress={() => this.toggleTimePicker()}>
+								onPress={() => this.toggleStartPicker()}>
 								<Text style={styles.label}>Start</Text>
+								<TextInput
+									style={styles.textInput}
+									value={this.state.start}
+									placeholder="StartTime"/>
+								<TimePicker
+									visible={this.state.showStartPicker}
+									getValue={(value) => this.getStart(value)}
+								/>
 							</TouchableOpacity>
 							<TouchableOpacity style={styles.item}
-								onPress={() => this.toggleTimePicker()}>
+								onPress={() => this.toggleEndPicker()}>
 								<Text style={styles.label}>End</Text>
+								<TextInput
+									style={styles.textInput}
+									value={this.state.end}
+									placeholder="StartTime"/>
+								<TimePicker
+									visible={this.state.showEndPicker}
+									getValue={(value) => this.getEnd(value)}
+								/>
 							</TouchableOpacity>
 							<DatePicker visible={this.state.showDatePicker}
 								getValue={(value) => this.getDate(value)}/>
-							<TimePicker
-								visible={this.state.showTimePicker}
-								getValue={(value) => this.getTime(value)}
-							/>
+
 						</View>
 
           </Modal>
@@ -205,7 +237,9 @@ const styles = StyleSheet.create({
 
 function mapStateToProps(state) {
 	return {
-		events: state.events
+		events: state.events,
+		communities: state.communities,
+		token: state.user.token,
 	}
 }
 export default connect(mapStateToProps)(EventModal)

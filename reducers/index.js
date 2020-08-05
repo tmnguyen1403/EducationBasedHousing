@@ -1,6 +1,6 @@
 import {
 		RECEIVE_USER, USER_LOGIN, USER_LOGOUT,
-	 	RECEIVE_EVENTS, CREATE_EVENT,
+	 	RECEIVE_EVENTS,
 	 	RECEIVE_COMMUNITIES, CHANGE_COMMUNITY } from '../actions'
 import { combineReducers } from 'redux'
 
@@ -29,19 +29,12 @@ function user (state = {}, action) {
 	}
 }
 
-export function events(state = {}, action) {
+export function events(state = [], action) {
 	switch (action.type) {
 		case RECEIVE_EVENTS:
-			return {
-				...state,
+			return [
 				...action.events
-			}
-		case CREATE_EVENT:
-			console.log("create event")
-			return {
-				...state,
-				...action.event,
-			}
+			]
 		default:
 			return state
 	}
