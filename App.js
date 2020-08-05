@@ -15,7 +15,7 @@ export default function App() {
   return (
 		<Provider store={createStore(reducer)}>
 			<View style={[styles.container]}>
-				<ImagePicker/>
+				<BottomTabNavigator/>
 			</View>
 		</Provider>
   );
