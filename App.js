@@ -9,13 +9,13 @@ import { createStore } from 'redux'
 import { Provider } from 'react-redux'
 import reducer from './reducers'
 //TEST
-import TestServerData from './components/TestServerData'
+import ImagePicker from './components/TestImagePicker'
 export default function App() {
 //
   return (
 		<Provider store={createStore(reducer)}>
 			<View style={[styles.container]}>
-				<BottomTabNavigator/>
+				<ImagePicker/>
 			</View>
 		</Provider>
   );
