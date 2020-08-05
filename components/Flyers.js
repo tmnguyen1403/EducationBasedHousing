@@ -3,14 +3,15 @@ import { View, Text, StyleSheet, TouchableOpacity } from 'react-native'
 import { FontAwesome } from '@expo/vector-icons';
 import textStyle from '../utils/textstyle'
 
-class Flyers extends Component {
+class Bulletin extends Component {
 	render() {
-		const { style } = this.props
+		const { style, navigate } = this.props
 		return (
-			<TouchableOpacity style={[styles.calendar, style]}>
+			<TouchableOpacity style={[styles.calendar, style]}
+				onPress={() => navigate()}>
 				<FontAwesome name="newspaper-o" size={40} color="blue"/>
 				<Text style={textStyle.main}>
-					Flyers
+					Bulletin
 				</Text>
 			</TouchableOpacity>
 		)
@@ -26,4 +27,4 @@ const styles = StyleSheet.create({
 	}
 })
 
-export default Flyers
+export default Bulletin

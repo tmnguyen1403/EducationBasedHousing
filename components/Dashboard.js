@@ -41,6 +41,7 @@ class Dashboard extends Component {
 	}
 	render() {
 		const CALENDAR = "Calendar"
+		const FLYER = "Flyer"
 		const ANNOUNCEMENTS = "Announcements"
 		const SETTINGS = "Settings"
 		const MY_COORDINATOR = "My Coordinator"
@@ -67,8 +68,12 @@ class Dashboard extends Component {
 					<Text style={styles.welcomeText}>Hello {community.name}</Text>
 				</View>
 				<View style={styles.userRow}>
-					<Calendar style={styles.item} navigate={() => this.goto(CALENDAR, community, token)}/>
-					<Flyers  style={styles.item}/>
+					<Calendar
+						style={styles.item}
+						navigate={() => this.goto(CALENDAR, community, token)}/>
+					<Flyers
+						style={styles.item}
+						navigate={() => this.goto(FLYER, community, token)}/>
 					<Settings  style={styles.item}/>
 					<MyCoordinator  style={styles.item}/>
 
