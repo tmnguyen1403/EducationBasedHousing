@@ -1,6 +1,7 @@
 import {
 		RECEIVE_USER, USER_LOGIN, USER_LOGOUT,
-	 	RECEIVE_EVENTS, CREATE_EVENT } from '../actions'
+	 	RECEIVE_EVENTS, CREATE_EVENT,
+	 	RECEIVE_COMMUNITIES, CHANGE_COMMUNITY } from '../actions'
 import { combineReducers } from 'redux'
 
 function user (state = {}, action) {
@@ -45,9 +46,30 @@ export function events(state = {}, action) {
 			return state
 	}
 }
+
+export function communities(state = {}, action) {
+	switch (action.type) {
+		case RECEIVE_COMMUNITIES:
+			console.log(RECEIVE_COMMUNITIES)
+			return {
+				...state,
+				...action.communities,
+			}
+		case CHANGE_COMMUNITY:
+				console.log(CHANGE_COMMUNITY)
+				return {
+					...state,
+					chosenIndex: action.chosenIndex,
+				}
+		default:
+			return state
+	}
+}
+
 export default combineReducers(
 	{
 		user,
-		events
+		events,
+		communities,
 	}
 )

@@ -14,6 +14,7 @@ import Settings from './Settings'
 import FlyerCreator from './FlyerCreator'
 import EventCreator from './EventCreator'
 import UserCreator from './UserCreator'
+import CommunitySwitch from './CommunitySwitch'
 
 import createCustomText from './CustomText'
 
@@ -34,36 +35,39 @@ class Dashboard extends Component {
 		this.props.dispatch(userLogout())
 		this.props.navigation.goBack()
 	}
-	toCalendar(community, token) {
-		const { navigation } = this.props
-		navigation.navigate("CalendarScreen", {communityId: community._id, token: token})
+	goto(screen, community, token) {
+		const { user, navigation, route } = this.props
+		navigation.navigate(screen, {communityId: community._id, token: token})
 	}
 	render() {
 		const CALENDAR = "Calendar"
 		const ANNOUNCEMENTS = "Announcements"
 		const SETTINGS = "Settings"
 		const MY_COORDINATOR = "My Coordinator"
+		const EVENT_CREATOR = "EventCreator"
 		const backgroundImage = require('../resources/images/background_image.jpg')
 		//save isManager into redux store
 		//const { isManager } = this.props
 
-		const { user, navigation, route } = this.props
+		const { user, navigation, route, communities } = this.props
 		let admin = 0
 		let community = []
 		if (user && user.user) {
 			admin = user.user.admin
 			token = user.token
 		}
-		if (route) {
-			community = route.params.community
+		if (communities) {
+			console.log("Dashboard communities", communities)
+			community = communities.data[communities.chosenIndex]
 		}
+		console.log("Dashboard communities", communities)
 		return (
 			<ImageBackground source={backgroundImage} style={styles.backgroundImage}>
 				<View style={styles.welcomeRow}>
 					<Text style={styles.welcomeText}>Hello {community.name}</Text>
 				</View>
 				<View style={styles.userRow}>
-					<Calendar style={styles.item} navigate={() => this.toCalendar(community, token)}/>
+					<Calendar style={styles.item} navigate={() => this.goto(CALENDAR, community, token)}/>
 					<Flyers  style={styles.item}/>
 					<Settings  style={styles.item}/>
 					<MyCoordinator  style={styles.item}/>
@@ -74,6 +78,7 @@ class Dashboard extends Component {
 						<EventCreator style={styles.item}/>
 						<FlyerCreator  style={styles.item}/>
 						<UserCreator style={styles.item}/>
+						<CommunitySwitch style={styles.item}/>
 					</View>
 				}
 				<TouchableOpacity style={[styles.item, styles.logout]} onPress={() => this.logout()}>
@@ -126,7 +131,7 @@ const styles = StyleSheet.create({
 		alignItems: 'center'
 	},
 	welcomeText: {
-		color: "white",
+		color: "red",
 		fontSize: 30,
 		textAlign: "center",
 	}
@@ -134,7 +139,8 @@ const styles = StyleSheet.create({
 
 function mapStateToProps(state) {
 	return {
-		user: state.user
+		user: state.user,
+		communities: state.communities,
 	}
 }
 export default connect(mapStateToProps)(Dashboard)

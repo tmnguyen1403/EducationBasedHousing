@@ -12,7 +12,7 @@ import WarningModal from './WarningModal'
 import createCustomText from './CustomText'
 //REDUX STATE
 import { connect } from 'react-redux'
-import { userLogin } from '../actions'
+import { userLogin, receiveCommunities } from '../actions'
 import { validateUser } from '../utils/api'
 
 
@@ -32,7 +32,8 @@ class Login extends Component {
 		const password = this.state.password
 		validateUser({username, password}, this.props.dispatch)
 		.then(result => {
-			const {navigation } = this.props
+			const {dispatch, navigation } = this.props
+			dispatch(receiveCommunities({data: result.communities, chosenIndex: 0}))
 			navigation.navigate("Dashboard",
 				{community: result.communities[0]})
 		})

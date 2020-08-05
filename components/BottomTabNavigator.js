@@ -14,7 +14,7 @@ export default function BottomTabNavigator() {
 				<Stack.Navigator initialRouteName="Login">
 					<Stack.Screen name="Login" component={Login}/>
 					<Stack.Screen name="Dashboard" component={Dashboard} />
-					<Stack.Screen name="CalendarScreen" component={CalendarScreen} />
+					<Stack.Screen name="Calendar" component={CalendarScreen} />
 				</Stack.Navigator>
 			</NavigationContainer>
 	)

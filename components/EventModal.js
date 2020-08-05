@@ -42,7 +42,6 @@ class EventModal extends Component {
 			start: this.state.start,
 			end: this.state.end,
 		}}
-		//AsyncStorage.setItem(CALENDAR_STORAGE_KEY, JSON.stringify(data))
 		this.props.dispatch(createEvent(data))
 		this.props.hideModal();
 		return true
