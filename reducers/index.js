@@ -1,6 +1,7 @@
 import {
 		RECEIVE_USER, USER_LOGIN, USER_LOGOUT,
 	 	RECEIVE_EVENTS,
+		RECEIVE_FLYERS,
 	 	RECEIVE_COMMUNITIES, CHANGE_COMMUNITY } from '../actions'
 import { combineReducers } from 'redux'
 
@@ -40,6 +41,17 @@ export function events(state = [], action) {
 	}
 }
 
+export function flyers(state = [], action) {
+	switch (action.type) {
+		case RECEIVE_FLYERS:
+			return [
+				...action.flyers
+			]
+		default:
+			return state
+	}
+}
+
 export function communities(state = {}, action) {
 	switch (action.type) {
 		case RECEIVE_COMMUNITIES:
@@ -63,6 +75,7 @@ export default combineReducers(
 	{
 		user,
 		events,
+		flyers,
 		communities,
 	}
 )

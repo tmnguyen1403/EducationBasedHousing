@@ -1,4 +1,5 @@
-import { userLogin, receiveEvents, createEvent } from '../actions'
+import { userLogin, receiveEvents, createEvent,
+	receiveFlyers } from '../actions'
 
 //server functions
 const URL = "http://localhost:3000/api/"
@@ -56,6 +57,34 @@ export function fetchCalendarEvents(communityId, token, dispatch) {
 	})
 }
 
+export function fetchFlyers(communityId, token, dispatch) {
+	const path = "flyer/get"
+	const url = URL + path
+	console.log("fetchFlyers for community:", communityId)
+	console.log("token", token)
+	fetch(url, {
+		method: "GET",
+		headers: {
+			accept: 'application/json',
+			'Content-Type': 'application/json',
+			token: token,
+			communityid: communityId,
+		}
+	})
+	.then(result => result.json())
+	.then(json => {
+		if (!json.success)
+			throw new Error(json.error)
+		else {
+			console.log("fetchFlyer successfully", json.flyers)
+			dispatch(receiveFlyers(json.flyers))
+		}
+	})
+	.catch(error => {
+		console.log("Error getting flyers", error.message)
+	})
+}
+
 export const fetchCreateEvent = async (newEvent, token, dispatch) => {
 	const path = "event/create"
 	const url = URL + path
@@ -108,5 +137,13 @@ export function getCommunityId(communities) {
 		return community._id
 	} catch (error) {
 		console.log("Error: getCommunityId ", error.message)
+	}
+}
+export function getToken(user) {
+	try {
+		return user.token
+	} catch (error) {
+		console.log("Error: getToken ", error.message)
+		return null
 	}
 }

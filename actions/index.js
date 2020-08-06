@@ -4,6 +4,7 @@ export const USER_LOGOUT = 'USER_LOGOUT'
 export const RECEIVE_EVENTS = 'RECEIVE_EVENTS'
 export const RECEIVE_COMMUNITIES = 'RECEIVE_COMMUNITIES'
 export const CHANGE_COMMUNITY = 'CHANGE_COMMUNITY'
+export const RECEIVE_FLYERS = 'RECEIVE_FLYERS'
 
 export function receiveUser (user) {
 	return {
@@ -16,6 +17,13 @@ export function receiveEvents (events) {
 	return {
 		type: RECEIVE_EVENTS,
 		events,
+	}
+}
+
+export function receiveFlyers (flyers) {
+	return {
+		type: RECEIVE_FLYERS,
+		flyers,
 	}
 }
 

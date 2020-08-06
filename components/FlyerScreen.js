@@ -2,22 +2,23 @@ import React, { Component } from 'react'
 import { View, Text, StyleSheet, ScrollView } from 'react-native'
 //Redux store
 import { connect } from 'react-redux'
-import { fetchCalendarEvents } from '../utils/api'
+import { fetchFlyers, getCommunityId, getToken } from '../utils/api'
 import { timeToString } from '../utils/helpers'
 import { receiveEvents } from '../actions'
 import FlyerView from './FlyerView'
 
 class FlyerScreen extends Component {
 	componentDidMount() {
-		const {route, dispatch} = this.props
+		const {user, communities, dispatch} = this.props
 		console.log("flyer screen did mount")
-		const {communityId, token} = route.params
-		fetchCalendarEvents(communityId, token, dispatch)
+		const communityId = getCommunityId(communities)
+		const token = getToken(user)
+		fetchFlyers(communityId, token, dispatch)
 	}
 	render() {
-		const {events} = this.props
-		console.log("calendar screen", events)
-		if (events.length === 0)
+		const {flyers} = this.props
+		console.log("flyer screen", flyers)
+		if (flyers.length === 0)
 			return (
 				<View style = {styles.container}>
 					<Text> There is no flyer in the community</Text>
@@ -25,8 +26,8 @@ class FlyerScreen extends Component {
 			)
 		return (
 			<ScrollView style={styles.container}>
-				{events.length > 0 &&
-					events.map(event => <FlyerView key={event._id} event={event}/>)
+				{flyers.length > 0 &&
+					flyers.map(flyer => <FlyerView key={flyer._id} flyer={flyer}/>)
 				}
 			</ScrollView>
 		)
@@ -42,7 +43,9 @@ const styles = StyleSheet.create({
 
 function mapStateToProps(state) {
 	return {
-		events: state.events
+		user: state.user,
+		communities: state.communities,
+		flyers: state.flyers,
 	}
 }
 export default connect(mapStateToProps)(FlyerScreen)

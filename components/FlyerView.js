@@ -1,18 +1,21 @@
 import React from 'react'
 import {View, Text, StyleSheet, TouchableOpacity, Image} from 'react-native'
-
+import { IMAGE_HOST } from '../utils/configs'
 /**
  * @param {Date} d
  * @return {string} monthInEnglish
  */
 
-export default function FlyerView({event})
+export default function FlyerView({flyer})
 {
-	console.log("FlyerView ",event)
+
+	const uri = IMAGE_HOST + flyer.imageName
+	console.log("FlyerView ",uri)
 	return (
 		<View style={styles.container}>
-			<Image style=""
-				source={require("../resources/images/kid_beach.jpg")}
+			<Text style={styles.flyerText}>{flyer.title}</Text>
+			<Image style={styles.flyerImage}
+				source={{uri: uri,}}
 			/>
 		</View>
 
@@ -24,31 +27,21 @@ const styles = StyleSheet.create({
 		margin: 5,
 		marginBottom: 20,
 		flex: 1,
-		flexDirection: 'row',
 		padding: 5,
 		justifyContent: 'center',
 		alignItems: 'center',
 		backgroundColor: 'white',
-		height: 150,
+		height: 300,
 	},
-	event: {
-		marginLeft: 20,
-		padding: 5,
-		justifyContent: 'center',
-		alignItems: 'center',
-		flexDirection: 'column',
-		borderStyle: 'solid',
-		borderColor: 'black',
-		borderRadius: 1,
-		borderLeftWidth: 1,
-	},
-	text: {
+	flyerText: {
 		textAlign: 'center',
-		fontSize: 16,
+		fontSize: 20,
 		padding: 5,
 	},
-	date: {
-		fontSize: 20,
+	flyerImage: {
+		width: "100%",
+		height: "80%",
+		marginTop: 10,
 	},
 	btnView: {
 		marginTop: 0,
