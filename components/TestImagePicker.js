@@ -42,10 +42,9 @@ export default class ImagePickerExample extends React.Component {
         quality: 1,
       });
       if (!result.cancelled) {
+				this.props.getImage(result)
         this.setState({ image: result.uri });
       }
-
-      console.log(result);
     } catch (E) {
       console.log(E);
     }

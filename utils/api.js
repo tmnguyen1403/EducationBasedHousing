@@ -1,5 +1,6 @@
 import { userLogin, receiveEvents, createEvent } from '../actions'
 
+//server functions
 const URL = "http://localhost:3000/api/"
 
 export const validateUser = async (user, dispatch) => {
@@ -73,5 +74,39 @@ export const fetchCreateEvent = async (newEvent, token, dispatch) => {
 		throw new Error(json.error)
 	else {
 		console.log("FetchCreateEvent successfully")
+	}
+}
+
+export const fetchCreateFlyer = async (newFlyer, token, dispatch) => {
+	const path = "flyer/create"
+	const url = URL + path
+	console.log("fetchCreateFlyer")
+	try {
+		const result = await fetch(url, {
+			method: "POST",
+			headers: {
+				'Content-Type': 'multipart/form-data',
+				'token': token
+			},
+			body: newFlyer
+		})
+		if (result.status === 200) {
+			console.log("FetchCreateFlyer successfully")
+		}
+		else {
+			throw new Error(resultJson.error)
+		}
+	} catch (error) {
+		console.log("Error fetchCreateFlyer", error.message)
+	}
+}
+
+//normal function
+export function getCommunityId(communities) {
+	try {
+		const community = communities.data[communities.chosenIndex]
+		return community._id
+	} catch (error) {
+		console.log("Error: getCommunityId ", error.message)
 	}
 }

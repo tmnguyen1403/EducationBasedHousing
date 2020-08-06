@@ -12,25 +12,51 @@ import TimePicker from './TimePicker'
 //REDUX STORE
 import {connect} from 'react-redux'
 //action
-import { fetchCreateEvent } from '../utils/api'
+import { fetchCreateFlyer, getCommunityId } from '../utils/api'
 import { AsyncStorage } from 'react-native'
 import ImagePicker from './TestImagePicker'
 
-class EventModal extends Component {
+class FlyerModal extends Component {
 	state = {
 		name: "",
 		showPicker: false,
+		imageUri: null,
 	}
   closeModal() {
     this.props.hideModal();
   }
 	create() {
-		this.closeModal()
+		try {
+			const { imageUri } = this.state
+			const { token, dispatch, communities } = this.props
+
+			const extension = imageUri.substr(imageUri.lastIndexOf(".")+1)
+			const nameWithExtension = imageUri.substr(imageUri.lastIndexOf("/")+1)
+			const data = new FormData()
+			//Note: do not replace file:// on IOS, keep the uri as it is
+			data.append("flyer", {
+				type: "image/" + extension,
+				name: nameWithExtension,
+				uri: imageUri,
+			})
+			data.append("title", this.state.name)
+			data.append("communityid", getCommunityId(communities))
+			fetchCreateFlyer(data, token, dispatch)
+			.then(() => {
+				this.closeModal()
+			})
+		} catch (error) {
+			console.log("FetchCreatorModal error: ", error.message)
+		}
+
 		return true
 	}
 	//get selected date from date picker
 	showPicker(){
 		this.setState({showPicker: true})
+	}
+	getImage(resultImage){
+		this.setState({imageUri: resultImage.uri, image: resultImage})
 	}
   render() {
 		const {visible, events} = this.props
@@ -73,6 +99,7 @@ class EventModal extends Component {
 								onPress={() => this.showPicker()}>
 								<Text style={styles.label}>UploadImage</Text>
 								<ImagePicker
+									getImage={(imageUri) => this.getImage(imageUri)}
 									visible={this.state.showPicker}
 								/>
 							</TouchableOpacity>
@@ -150,4 +177,4 @@ function mapStateToProps(state) {
 		token: state.user.token,
 	}
 }
-export default connect(mapStateToProps)(EventModal)
+export default connect(mapStateToProps)(FlyerModal)

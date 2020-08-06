@@ -13,7 +13,7 @@ import TimePicker from './TimePicker'
 import {connect} from 'react-redux'
 //action
 import {createEvent} from '../actions'
-import { fetchCreateEvent } from '../utils/api'
+import { getCommunityId, fetchCreateEvent } from '../utils/api'
 import { AsyncStorage } from 'react-native'
 
 class EventModal extends Component {
@@ -36,7 +36,6 @@ class EventModal extends Component {
 		//add new events to redux store
 		const {name, location, description, date, start, end} = this.state
 		const { communities, token, dispatch, hideModal } = this.props
-		const communityId = communities.data[communities.chosenIndex]._id
 		const newEvent = {
 			name: name,
 			location: location,
@@ -44,7 +43,7 @@ class EventModal extends Component {
 			date: date,
 			start: start,
 			end: end,
-			communityid: communityId
+			communityid: getCommunityId(communities)
 		}
 		fetchCreateEvent(newEvent, token, dispatch)
 		.then(() => {
