@@ -8,7 +8,6 @@ import { IMAGE_HOST } from '../utils/configs'
 
 export default function FlyerView({flyer})
 {
-
 	const uri = IMAGE_HOST + flyer.imageName
 	console.log("FlyerView ",uri)
 	return (
@@ -18,7 +17,6 @@ export default function FlyerView({flyer})
 				source={{uri: uri,}}
 			/>
 		</View>
-
 	)
 }
 

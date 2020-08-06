@@ -9,7 +9,7 @@ import {
 import { FontAwesome } from '@expo/vector-icons';
 import Calendar from './Calendar'
 import Flyers from './Flyers'
-import MyCoordinator from './MyCoordinator'
+import ContactUs from './ContactUs'
 import Settings from './Settings'
 import FlyerCreator from './FlyerCreator'
 import EventCreator from './EventCreator'
@@ -75,7 +75,7 @@ class Dashboard extends Component {
 						style={styles.item}
 						navigate={() => this.goto(FLYER, community, token)}/>
 					<Settings  style={styles.item}/>
-					<MyCoordinator  style={styles.item}/>
+					<ContactUs  style={styles.item}/>
 
 				</View>
 				{admin > 0 &&
