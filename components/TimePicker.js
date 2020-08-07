@@ -1,6 +1,9 @@
 import React, { useState } from "react";
 import { View, Picker, StyleSheet, Text, Fragment } from "react-native";
 
+//custom helpers
+import { getAmPmTimes } from '../utils/api'
+
 const TimePicker = ({visible, getValue}) => {
 
   const [selectedValue, setSelectedValue] = useState("");
@@ -8,13 +11,7 @@ const TimePicker = ({visible, getValue}) => {
 		console.log("hello timepicker")
 		return null
 	}
-	let times = () => {
-		let items = []
-		for (let hour = 0; hour < 24; ++hour) {
-			items.push(hour + "\0")
-		}
-		return items
-	}
+	let times = getAmPmTimes()
   return (
       <Picker
         selectedValue={selectedValue}
@@ -25,7 +22,7 @@ const TimePicker = ({visible, getValue}) => {
 				}}
 				mode="dialog"
       >
-			{ times().map(hour =>
+			{ times.map(hour =>
 				<Picker.Item
 				key={hour}
 				label={hour}
