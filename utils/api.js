@@ -139,6 +139,7 @@ export function getCommunityId(communities) {
 		console.log("Error: getCommunityId ", error.message)
 	}
 }
+
 export function getToken(user) {
 	try {
 		return user.token
@@ -146,4 +147,12 @@ export function getToken(user) {
 		console.log("Error: getToken ", error.message)
 		return null
 	}
+}
+
+export function capitalized(str) {
+	let words = str.split(" ")
+	let capWords = words.map(word => {
+		return word.charAt(0).toUpperCase() + word.slice(1)
+	})
+	return capWords.join(" ")
 }

@@ -7,6 +7,7 @@ import {
 	ImageBackground
  } from 'react-native'
 import { FontAwesome } from '@expo/vector-icons';
+/*-------------Custom Components-----------*/
 import Calendar from './Calendar'
 import Flyers from './Flyers'
 import ContactUs from './ContactUs'
@@ -17,6 +18,7 @@ import UserCreator from './UserCreator'
 import CommunitySwitch from './CommunitySwitch'
 
 import createCustomText from './CustomText'
+import { capitalized } from '../utils/api'
 
 //REDUX STATE
 import {connect} from 'react-redux'
@@ -65,7 +67,7 @@ class Dashboard extends Component {
 		return (
 			<ImageBackground source={backgroundImage} style={styles.backgroundImage}>
 				<View style={styles.welcomeRow}>
-					<Text style={styles.welcomeText}>Hello {community.name}</Text>
+					<Text style={styles.welcomeText}>{capitalized(community.name)}</Text>
 				</View>
 				<View style={styles.userRow}>
 					<Calendar
