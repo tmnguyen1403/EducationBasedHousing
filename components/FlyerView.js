@@ -1,23 +1,37 @@
-import React from 'react'
+import React, {Component} from 'react'
 import {View, Text, StyleSheet, TouchableOpacity, Image} from 'react-native'
 import { IMAGE_HOST } from '../utils/configs'
+import CustomButton from './CustomButton'
+import ImageModal from './ImageModal'
 /**
  * @param {Date} d
  * @return {string} monthInEnglish
  */
 
-export default function FlyerView({flyer})
+export default class FlyerView extends Component
 {
-	const uri = IMAGE_HOST + flyer.imageName
-	console.log("FlyerView ",uri)
-	return (
-		<View style={styles.container}>
-			<Text style={styles.flyerText}>{flyer.title}</Text>
-			<Image style={styles.flyerImage}
-				source={{uri: uri,}}
-			/>
-		</View>
-	)
+	state = {
+		showModal: false
+	}
+	toggleModal(){
+		this.setState({showModal: !this.state.showModal})
+	}
+	render() {
+		const { flyer } = this.props
+		const uri = IMAGE_HOST + flyer.imageName
+		console.log("FlyerView ",uri)
+		return (
+			<View style={styles.container}>
+				<Text style={styles.flyerText}>{flyer.title}</Text>
+				<Image style={styles.flyerImage}
+					source={{uri: uri,}}
+				/>
+				<CustomButton name="View Detail" onPress={() => this.toggleModal()}/>
+				<ImageModal visible={this.state.showModal} flyer={flyer}
+					hideModal={() => this.toggleModal()}/>
+			</View>
+		)
+	}
 }
 
 const styles = StyleSheet.create({
@@ -38,7 +52,7 @@ const styles = StyleSheet.create({
 	},
 	flyerImage: {
 		width: "100%",
-		height: "80%",
+		height: "75%",
 		marginTop: 10,
 	},
 	btnView: {
