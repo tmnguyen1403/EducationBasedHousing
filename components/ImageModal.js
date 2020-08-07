@@ -18,9 +18,11 @@ import { IMAGE_HOST } from '../utils/configs'
 class ImageModal extends Component {
 	state = {
 	}
-
+	edit(){
+		console.log("hello edit")
+	}
   render() {
-		const {visible, flyer, hideModal} = this.props
+		const {visible, flyer, hideModal, admin} = this.props
 		if (!visible)
 			return null
 		const imageUri = IMAGE_HOST + flyer.imageName
@@ -40,12 +42,12 @@ class ImageModal extends Component {
 								<TouchableOpacity onPress={() => hideModal()}>
 									<Text style={[styles.topBarText, styles.cancelText]}>Cancel</Text>
 								</TouchableOpacity>
-								<TouchableOpacity>
-									<Text style={styles.topBarText}>{flyer.title}</Text>
-								</TouchableOpacity>
-								<TouchableOpacity>
+								<Text style={styles.topBarText}>{flyer.title}</Text>
+								<TouchableOpacity disabled={admin < 1}
+									onPress={() => this.edit()}>
 									<Text style={[styles.topBarText, styles.createText]}>Edit</Text>
 								</TouchableOpacity>
+
 							</View>
 						{/*body*/}
 						<View>
@@ -125,7 +127,7 @@ const styles = StyleSheet.create({
 
 function mapStateToProps(state) {
 	return {
-		events: state.events,
+		admin: state.user.user.admin,
 		communities: state.communities,
 		token: state.user.token,
 	}
