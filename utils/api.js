@@ -1,8 +1,8 @@
 import { userLogin, receiveEvents, createEvent,
 	receiveFlyers } from '../actions'
-
+import { HOST } from './configs'
 //server functions
-const URL = "http://localhost:3000/api/"
+const URL = HOST + 'api/'
 
 export const validateUser = async (user, dispatch) => {
 	const path = "user/login"
