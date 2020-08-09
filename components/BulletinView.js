@@ -14,43 +14,46 @@ import mainstyles from '../styles/main'
 import { connect } from 'react-redux'
 import { getImagePath } from '../utils/api'
 
-class BulletinView extends Component
+export default class BulletinView extends Component
 {
 	componentDidMount() {
-			const communityId = "5f263e14fc876d193c144d15"
-			const token = ""
-			fetchFlyers(communityId, token, this.props.dispatch)
+			// const communityId = "5f263e14fc876d193c144d15"
+			// const token = ""
+			// fetchFlyers(communityId, token, this.props.dispatch)
 	}
 
 	render() {
 		// const backgroundImage = require('../resources/images/background_image.jpg')
 		// const flyer1 =  require('../resources/images/kid_beach.jpg')
 		//const flyer2 =  require('../resources/images/kid_beach.jpg')
-		const {flyers } = this.props
-		if (flyers === undefined || flyers.length === 0)
+		const {bulletin, local} = this.props
+		if (bulletin === undefined || bulletin === null)
 			return null
-		let {background, flyer1, flyer2} = flyers[0]
-		background = getImagePath(background)
-		flyer1 = getImagePath(flyer1)
-		flyer2 = getImagePath(flyer2)
+		let {background, flyer1, flyer2} = bulletin
+		//for server
+		if (!local) {
+			background = getImagePath(background)
+			flyer1 = getImagePath(flyer1)
+			flyer2 = getImagePath(flyer2)
+		}
 		console.log(background)
 		return (
 			<ImageBackground
 				style={[mainstyles.container, styles.column]}
-				source={{uri: background}}>
-					{flyer1.indexOf(".") > - 1 ?
+				source={local ? {uri: background} : background}>
+					{flyer1 && flyer1.indexOf(".") > - 1 ?
 						<Image
 							style={[styles.image]}
-							source={{uri: flyer1}}
+							source={local ? {uri: flyer1} : flyer1}
 						>
 						</Image>
 						:
 						<Text>Please provide image</Text>
 					}
-					{flyer2.indexOf(".") > - 1 ?
+					{flyer2 && flyer2.indexOf(".") > - 1 ?
 						<Image
 							style={[styles.image]}
-							source={{uri: flyer2}}
+							source={local ? {uri: flyer2} : flyer2}
 						>
 						</Image>
 						:
@@ -78,9 +81,3 @@ const styles = StyleSheet.create({
 		maxHeight: "100%",
 	}
 })
-function mapProps(state) {
-	return {
-		flyers: state.flyers
-	}
-}
-export default connect(mapProps)(BulletinView)

@@ -11,11 +11,11 @@ export default class ImagePickerExample extends React.Component {
 
   render() {
     let { image } = this.state;
-
+ //{image && <Image source={{ uri: image }} style={{ width: 200, height: 200 }} />}
     return (
       <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
         <Button title="Pick an image from camera roll" onPress={this._pickImage} />
-        {image && <Image source={{ uri: image }} style={{ width: 200, height: 200 }} />}
+
       </View>
     );
   }
@@ -42,7 +42,7 @@ export default class ImagePickerExample extends React.Component {
         quality: 1,
       });
       if (!result.cancelled) {
-				this.props.getImage(result)
+				this.props.getImage(result.uri)
         this.setState({ image: result.uri });
       }
     } catch (E) {

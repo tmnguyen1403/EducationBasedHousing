@@ -15,30 +15,46 @@ import {connect} from 'react-redux'
 import { fetchCreateFlyer, getCommunityId } from '../utils/api'
 import { AsyncStorage } from 'react-native'
 import ImagePicker from './TestImagePicker'
+import BulletinView from './BulletinView'
 
 class FlyerModal extends Component {
 	state = {
 		name: "",
 		showPicker: false,
 		imageUri: null,
+		background: null,
+		flyer1: null,
+		flyer2: null,
+		error: "",
 	}
   closeModal() {
     this.props.hideModal();
   }
+	getImageInfo(imageUri) {
+		if (imageUri === undefined || imageUri === null || imageUri === "")
+			return null
+		const extension = imageUri.substr(imageUri.lastIndexOf(".")+1)
+		const nameWithExtension = imageUri.substr(imageUri.lastIndexOf("/")+1)
+		return {
+			type: "image/" + extension,
+			name: nameWithExtension,
+			uri: imageUri,
+		}
+	}
 	create() {
 		try {
-			const { imageUri } = this.state
+			const { background, flyer1, flyer2 } = this.state
 			const { token, dispatch, communities } = this.props
-
-			const extension = imageUri.substr(imageUri.lastIndexOf(".")+1)
-			const nameWithExtension = imageUri.substr(imageUri.lastIndexOf("/")+1)
+			if (background === undefined || background === null) {
+				console.log("Please provide background image")
+				this.setState({error: "Please Provide Background Image"})
+				return
+			}
 			const data = new FormData()
 			//Note: do not replace file:// on IOS, keep the uri as it is
-			data.append("flyer", {
-				type: "image/" + extension,
-				name: nameWithExtension,
-				uri: imageUri,
-			})
+			data.append("background", this.getImageInfo(this.state.background))
+			data.append("flyer1", this.getImageInfo(this.state.flyer1))
+			data.append("flyer2", this.getImageInfo(this.state.flyer2))
 			data.append("title", this.state.name)
 			data.append("communityid", getCommunityId(communities))
 			fetchCreateFlyer(data, token, dispatch)
@@ -55,13 +71,19 @@ class FlyerModal extends Component {
 	showPicker(){
 		this.setState({showPicker: true})
 	}
-	getImage(resultImage){
-		this.setState({imageUri: resultImage.uri, image: resultImage})
+	getBackground(background){
+		this.setState({background})
+	}
+	getFlyer1(flyer1){
+		this.setState({flyer1})
+	}
+	getFlyer2(flyer2){
+		this.setState({flyer2})
 	}
   render() {
 		const {visible, events} = this.props
-		if (!visible)
-			return null
+		// if (!visible)
+		// 	return null
     return (
         <View style={styles.container}>
           <Modal
@@ -87,6 +109,11 @@ class FlyerModal extends Component {
 							</View>
 						{/*body*/}
 						<View>
+							{this.state.error !== "" &&
+								<View style={styles.item}>
+									<Text style={styles.error}>{this.state.error}</Text>
+								</View>
+							}
               <View style={styles.item}>
 								<Text style={styles.label}>Title</Text>
 								<TextInput
@@ -95,16 +122,42 @@ class FlyerModal extends Component {
 									value={this.state.name}
 									onChangeText={(name) => this.setState({name})}/>
 							</View>
+
 							<TouchableOpacity style={styles.item}
 								onPress={() => this.showPicker()}>
-								<Text style={styles.label}>UploadImage</Text>
+								<Text style={styles.label}>BackgroundImage</Text>
 								<ImagePicker
-									getImage={(imageUri) => this.getImage(imageUri)}
+									getImage={(imageUri) => this.getBackground(imageUri)}
+									visible={this.state.showPicker}
+								/>
+							</TouchableOpacity>
+							<TouchableOpacity style={styles.item}
+								onPress={() => this.showPicker()}>
+								<Text style={styles.label}>Flyer1Image</Text>
+								<ImagePicker
+									getImage={(imageUri) => this.getFlyer1(imageUri)}
+									visible={this.state.showPicker}
+								/>
+							</TouchableOpacity>
+							<TouchableOpacity style={styles.item}
+								onPress={() => this.showPicker()}>
+								<Text style={styles.label}>Flyer2Image</Text>
+								<ImagePicker
+									getImage={(imageUri) => this.getFlyer2(imageUri)}
 									visible={this.state.showPicker}
 								/>
 							</TouchableOpacity>
 						</View>
-
+						{this.state.background &&
+							<BulletinView
+								local={true}
+								bulletin={{
+									background: this.state.background,
+									flyer1: this.state.flyer1,
+									flyer2: this.state.flyer2,
+								}}>
+							</BulletinView>
+						}
           </Modal>
         </View>
     );
@@ -159,6 +212,11 @@ const styles = StyleSheet.create({
 		padding: 10,
 		flexDirection: "row",
 		flexWrap: "wrap",
+	},
+	error: {
+		margin: 10,
+		fontSize: 20,
+		color: 'red',
 	},
 	label: {
 		margin: 10,

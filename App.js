@@ -6,6 +6,7 @@ import BottomTabNavigator from './components/BottomTabNavigator'
 import Login from './components/Login'
 
 import BulletinView from './components/BulletinView'
+import FlyerCreatorModal from './components/FlyerCreatorModal'
 //REDUX STATE
 import { createStore } from 'redux'
 import { Provider } from 'react-redux'
@@ -16,9 +17,7 @@ export default function App() {
 
   return (
 		<Provider store={createStore(reducer)}>
-
-						<BulletinView/>
-
+			<BottomTabNavigator/>
 		</Provider>
   );
 }
