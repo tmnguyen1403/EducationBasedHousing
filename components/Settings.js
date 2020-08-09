@@ -1,15 +1,15 @@
 import React, {Component } from 'react'
 import { View, Text, StyleSheet, TouchableOpacity } from 'react-native'
 import { Ionicons } from '@expo/vector-icons';
-import textStyle from '../utils/textstyle'
+import mainstyles from '../styles/main'
 
 class Settings extends Component {
 	render() {
 		const { style } = this.props
 		return (
-			<TouchableOpacity style={[styles.calendar, style]}>
+			<TouchableOpacity style={style}>
 				<Ionicons name="ios-settings" size={40} color="blue"/>
-				<Text style={textStyle.main}>Settings</Text>
+				<Text style={mainstyles.text}>Settings</Text>
 			</TouchableOpacity>
 		)
 	}

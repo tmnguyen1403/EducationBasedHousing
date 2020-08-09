@@ -1,7 +1,7 @@
 import React, {Component } from 'react'
 import { View, Text, StyleSheet, TouchableOpacity, Fragment } from 'react-native'
 import { Ionicons } from '@expo/vector-icons';
-import textStyle from '../utils/textstyle'
+import mainstyles from '../styles/main'
 import EventModal from './EventModal'
 
 class EventCreator extends Component {
@@ -18,7 +18,7 @@ class EventCreator extends Component {
 				style={[styles.calendar, style]}
 				onPress={() => this.toggleModal()}>
 				<Ionicons name="ios-create" size={40} color="blue" />
-				<Text style={textStyle.main}>Create Event</Text>
+				<Text style={mainstyles.text}>Create Event</Text>
 				<EventModal
 					visible={this.state.showModal}
 					hideModal={() => this.toggleModal()}/>
@@ -28,12 +28,6 @@ class EventCreator extends Component {
 }
 
 const styles = StyleSheet.create({
-	calendar: {
-		backgroundColor: 'white',
-		margin: 10,
-		justifyContent: 'center',
-		alignItems: 'center'
-	}
 })
 
 export default EventCreator
