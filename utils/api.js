@@ -1,6 +1,8 @@
 import { userLogin, receiveEvents, createEvent,
 	receiveFlyers } from '../actions'
 import { HOST } from './configs'
+import { IMAGE_HOST } from '../utils/configs'
+
 //server functions
 const URL = HOST + 'api/'
 
@@ -85,6 +87,7 @@ export function fetchFlyers(communityId, token, dispatch) {
 	})
 }
 
+
 export const fetchCreateEvent = async (newEvent, token, dispatch) => {
 	const path = "event/create"
 	const url = URL + path
@@ -163,4 +166,8 @@ export function getAmPmTimes() {
 "7 pm", "9 pm", "9 pm", "10 pm", "11 pm", "12 pm"]
 
 	return times
+}
+
+export function getImagePath(imageName) {
+	return IMAGE_HOST + imageName
 }

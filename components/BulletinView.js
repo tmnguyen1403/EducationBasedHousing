@@ -1,0 +1,86 @@
+import React, { Component } from 'react'
+import { View, Image,
+	TouchableOpacity,
+	StyleSheet,
+	ImageBackground,
+	Text} from 'react-native'
+
+//custom components
+import Row from './Row'
+import Column from './Column'
+
+import { fetchFlyers } from '../utils/api'
+import mainstyles from '../styles/main'
+import { connect } from 'react-redux'
+import { getImagePath } from '../utils/api'
+
+class BulletinView extends Component
+{
+	componentDidMount() {
+			const communityId = "5f263e14fc876d193c144d15"
+			const token = ""
+			fetchFlyers(communityId, token, this.props.dispatch)
+	}
+
+	render() {
+		// const backgroundImage = require('../resources/images/background_image.jpg')
+		// const flyer1 =  require('../resources/images/kid_beach.jpg')
+		//const flyer2 =  require('../resources/images/kid_beach.jpg')
+		const {flyers } = this.props
+		if (flyers === undefined || flyers.length === 0)
+			return null
+		let {background, flyer1, flyer2} = flyers[0]
+		background = getImagePath(background)
+		flyer1 = getImagePath(flyer1)
+		flyer2 = getImagePath(flyer2)
+		console.log(background)
+		return (
+			<ImageBackground
+				style={[mainstyles.container, styles.column]}
+				source={{uri: background}}>
+					{flyer1.indexOf(".") > - 1 ?
+						<Image
+							style={[styles.image]}
+							source={{uri: flyer1}}
+						>
+						</Image>
+						:
+						<Text>Please provide image</Text>
+					}
+					{flyer2.indexOf(".") > - 1 ?
+						<Image
+							style={[styles.image]}
+							source={{uri: flyer2}}
+						>
+						</Image>
+						:
+						<Text>Please provide image</Text>
+					}
+			</ImageBackground>
+		)
+	}
+}
+
+const styles = StyleSheet.create({
+	image: {
+		width: "90%",
+		flexBasis: 100,
+		flexGrow: 5,
+		margin: 10,
+	},
+	column: {
+		marginTop: 40,
+		marginBottom: 40,
+		padding: 5,
+		justifyContent: "space-around",
+		alignContent: "center",
+		alignItems: "center",
+		maxHeight: "100%",
+	}
+})
+function mapProps(state) {
+	return {
+		flyers: state.flyers
+	}
+}
+export default connect(mapProps)(BulletinView)

@@ -20,6 +20,7 @@ class ContactUsModal extends Component {
 	state = {
 		sender: "",
 		phone: "",
+		apartmentNumber: "",
 		content: "",
 		content: "",
 		images: null,
@@ -94,6 +95,14 @@ class ContactUsModal extends Component {
 									placeholder="Sender"
 									value={this.state.sender}
 									onChangeText={(text) => this.setState({sender: text})}/>
+							</View>
+              <View style={styles.item}>
+								<Text style={styles.label}>Apartment Number</Text>
+								<TextInput
+									style={styles.textInput}
+									placeholder="Sender"
+									value={this.state.apartmentNumber}
+									onChangeText={(text) => this.setState({apartmentNumber: text})}/>
 							</View>
 							<View style={styles.item}>
 								<Text style={styles.label}>Phone Number</Text>

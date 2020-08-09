@@ -4,6 +4,8 @@ import { Platform, StyleSheet, Text, View, ImageBackground } from 'react-native'
 import Dashboard from './components/Dashboard'
 import BottomTabNavigator from './components/BottomTabNavigator'
 import Login from './components/Login'
+
+import BulletinView from './components/BulletinView'
 //REDUX STATE
 import { createStore } from 'redux'
 import { Provider } from 'react-redux'
@@ -15,7 +17,7 @@ export default function App() {
   return (
 		<Provider store={createStore(reducer)}>
 
-						<BottomTabNavigator/>
+						<BulletinView/>
 
 		</Provider>
   );
