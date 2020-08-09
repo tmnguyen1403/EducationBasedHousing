@@ -17,19 +17,31 @@ import { AsyncStorage } from 'react-native'
 import ImagePicker from './TestImagePicker'
 import BulletinView from './BulletinView'
 
-class FlyerModal extends Component {
+class FlyerCreatorModal extends Component {
+	static counter = 0
+	init = {
+		name: "",
+		showPicker: false,
+		background: null,
+		flyer1: null,
+		flyer2: null,
+		error: "",
+	}
 	state = {
 		name: "",
 		showPicker: false,
-		imageUri: null,
 		background: null,
 		flyer1: null,
 		flyer2: null,
 		error: "",
 	}
   closeModal() {
+		this.setState({
+			...this.init
+		})
     this.props.hideModal();
   }
+
 	getImageInfo(imageUri) {
 		if (imageUri === undefined || imageUri === null || imageUri === "")
 			return null
@@ -82,8 +94,10 @@ class FlyerModal extends Component {
 	}
   render() {
 		const {visible, events} = this.props
-		// if (!visible)
-		// 	return null
+		++FlyerCreatorModal.counter
+		console.log("Render called ", FlyerCreatorModal.counter)
+		if (!visible)
+			return null
     return (
         <View style={styles.container}>
           <Modal
@@ -235,4 +249,4 @@ function mapStateToProps(state) {
 		token: state.user.token,
 	}
 }
-export default connect(mapStateToProps)(FlyerModal)
+export default connect(mapStateToProps)(FlyerCreatorModal)

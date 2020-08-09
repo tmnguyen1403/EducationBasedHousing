@@ -7,7 +7,7 @@ import { timeToString } from '../utils/helpers'
 import { receiveEvents } from '../actions'
 import FlyerView from './FlyerView'
 
-class FlyerScreen extends Component {
+class BulletinScreen extends Component {
 	componentDidMount() {
 		const {user, communities, dispatch} = this.props
 		console.log("flyer screen did mount")
@@ -48,4 +48,4 @@ function mapStateToProps(state) {
 		flyers: state.flyers,
 	}
 }
-export default connect(mapStateToProps)(FlyerScreen)
+export default connect(mapStateToProps)(BulletinScreen)
