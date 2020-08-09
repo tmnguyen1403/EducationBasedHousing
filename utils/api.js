@@ -84,6 +84,7 @@ export function fetchFlyers(communityId, token, dispatch) {
 	})
 	.catch(error => {
 		console.log("Error getting flyers", error.message)
+		dispatch(receiveFlyers([]))
 	})
 }
 

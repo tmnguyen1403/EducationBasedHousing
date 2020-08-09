@@ -158,7 +158,7 @@ class EventModal extends Component {
 								<TextInput
 									style={styles.textInput}
 									value={this.state.end}
-									placeholder="StartTime"/>
+									placeholder="EndTime"/>
 								<TimePicker
 									visible={this.state.showEndPicker}
 									getValue={(value) => this.getEnd(value)}

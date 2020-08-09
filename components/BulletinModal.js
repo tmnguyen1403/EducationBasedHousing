@@ -13,19 +13,19 @@ import {connect} from 'react-redux'
 import {createEvent} from '../actions'
 import { getCommunityId, fetchCreateEvent } from '../utils/api'
 import { AsyncStorage } from 'react-native'
-import { IMAGE_HOST } from '../utils/configs'
+import { getImagePath } from '../utils/api'
 
-class ImageModal extends Component {
+class BulletinModal extends Component {
 	state = {
 	}
 	edit(){
 		console.log("hello edit")
 	}
   render() {
-		const {visible, flyer, hideModal, admin} = this.props
+		const {visible, bulletin, hideModal, admin} = this.props
 		if (!visible)
 			return null
-		const imageUri = IMAGE_HOST + flyer.imageName
+		const imageUri = getImagePath(bulletin.imageName)
     return (
         <View style={styles.container}>
           <Modal
@@ -42,7 +42,7 @@ class ImageModal extends Component {
 								<TouchableOpacity onPress={() => hideModal()}>
 									<Text style={[styles.topBarText, styles.cancelText]}>Cancel</Text>
 								</TouchableOpacity>
-								<Text style={styles.topBarText}>{flyer.title}</Text>
+								<Text style={styles.topBarText}>{bulletin.title}</Text>
 								<TouchableOpacity disabled={admin < 1}
 									onPress={() => this.edit()}>
 									<Text style={[styles.topBarText, styles.createText]}>Edit</Text>
@@ -132,4 +132,4 @@ function mapStateToProps(state) {
 		token: state.user.token,
 	}
 }
-export default connect(mapStateToProps)(ImageModal)
+export default connect(mapStateToProps)(BulletinModal)
