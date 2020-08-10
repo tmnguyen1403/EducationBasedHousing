@@ -134,6 +134,30 @@ export const fetchCreateFlyer = async (newFlyer, token, dispatch) => {
 	}
 }
 
+export const fetchEditFlyer = async (newFlyer, flyerId, token, dispatch) => {
+	const path = "flyer/" + flyerId + "/update"
+	const url = URL + path
+	console.log("fetchCreateFlyer")
+	try {
+		const result = await fetch(url, {
+			method: "PUT",
+			headers: {
+				'Content-Type': 'multipart/form-data',
+				'token': token
+			},
+			body: newFlyer
+		})
+		if (result.status === 200) {
+			console.log("FetchEditFlyer successfully")
+		}
+		else {
+			throw new Error(resultJson.error)
+		}
+	} catch (error) {
+		console.warn("Error fetchCreateFlyer", error.message)
+	}
+}
+
 //normal function
 export function getCommunityId(communities) {
 	try {

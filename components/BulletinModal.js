@@ -15,12 +15,19 @@ import {connect} from 'react-redux'
 import {createEvent} from '../actions'
 import { getCommunityId, fetchCreateEvent } from '../utils/api'
 import { getImagePath } from '../utils/api'
+import BulletinEditModal from './BulletinEditModal'
 
 class BulletinModal extends Component {
 	state = {
+		showModal: false
+	}
+	toggleModal(){
+		this.setState({showModal: !this.state.showModal})
 	}
 	edit(){
-		console.log("hello edit")
+		console.warn("hello edit")
+		this.toggleModal()
+		//show BulletinEditModal
 	}
   render() {
 		const {visible, bulletin, hideModal, admin} = this.props
@@ -44,16 +51,21 @@ class BulletinModal extends Component {
 									<Text style={[styles.topBarText, styles.cancelText]}>Cancel</Text>
 								</TouchableOpacity>
 								<Text style={styles.topBarText}>{bulletin.title}</Text>
-								<TouchableOpacity disabled={admin < 1}
-									onPress={() => this.edit()}>
-									<Text style={[styles.topBarText, styles.createText]}>Edit</Text>
-								</TouchableOpacity>
-
+								{admin > 0 &&
+									<TouchableOpacity
+										onPress={() => this.edit()}>
+										<Text style={[styles.topBarText, styles.createText]}>Edit</Text>
+									</TouchableOpacity>
+								}
 							</View>
 						{/*body*/}
 						<BulletinView bulletin={bulletin}/>
-
+						<BulletinEditModal
+						visible={this.state.showModal}
+						bulletin={bulletin}
+						hideModal={() => this.toggleModal()} />
           </Modal>
+
         </View>
     );
   }
