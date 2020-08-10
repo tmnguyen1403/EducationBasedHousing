@@ -9,9 +9,10 @@ import {Text,
 //custom components
 import DatePicker from './DatePicker'
 import TimePicker from './TimePicker'
-//REDUX STORE
+/*---------------*/
 import {connect} from 'react-redux'
-//action
+import { editFlyer } from '../actions'
+/*-------------*/
 import { fetchEditFlyer } from '../utils/api'
 import { AsyncStorage } from 'react-native'
 import ImagePicker from './TestImagePicker'
@@ -80,7 +81,7 @@ class BulletinEditModal extends Component {
 	}
 	update() {
 		try {
-			const { token, dispatch } = this.props
+			const {bulletin, token, dispatch } = this.props
 			const editedFields = this.getEditedField()
 			if (editedFields.length === 0) {
 				this.raiseError("There is no change in bulletin. Please provide new data")
@@ -101,9 +102,10 @@ class BulletinEditModal extends Component {
 			//use this to delete old data from server
 			if (deleteFiles.length > 0)
 				data.append("deleteFiles", deleteFiles)
+			//
 			const flyerId = this.state._id
 			fetchEditFlyer(data, flyerId, token, dispatch)
-			.then(() => {
+			.then(success => {
 				this.closeModal()
 			})
 		} catch (error) {
@@ -126,7 +128,7 @@ class BulletinEditModal extends Component {
 		this.setState({flyer2})
 	}
   render() {
-		const {visible, events} = this.props
+		const {visible} = this.props
 		console.warn("BulletinEditModal called ")
 		if (!visible)
 			return null

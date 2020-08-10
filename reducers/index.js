@@ -1,7 +1,7 @@
 import {
 		RECEIVE_USER, USER_LOGIN, USER_LOGOUT,
 	 	RECEIVE_EVENTS,
-		RECEIVE_FLYERS,
+		RECEIVE_FLYERS, EDIT_FLYER,
 	 	RECEIVE_COMMUNITIES, CHANGE_COMMUNITY } from '../actions'
 import { combineReducers } from 'redux'
 
@@ -47,6 +47,15 @@ export function flyers(state = [], action) {
 			return [
 				...action.flyers
 			]
+		case EDIT_FLYER:
+			console.log("called editflyer")
+			let flyer = action.flyer
+			let newFlyers = state.map(data => {
+				if (data._id === flyer._id)
+					return flyer
+				return data
+			})
+			return newFlyers
 		default:
 			return state
 	}

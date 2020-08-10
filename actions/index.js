@@ -5,6 +5,7 @@ export const RECEIVE_EVENTS = 'RECEIVE_EVENTS'
 export const RECEIVE_COMMUNITIES = 'RECEIVE_COMMUNITIES'
 export const CHANGE_COMMUNITY = 'CHANGE_COMMUNITY'
 export const RECEIVE_FLYERS = 'RECEIVE_FLYERS'
+export const EDIT_FLYER = 'EDIT_FLYER'
 
 export function receiveUser (user) {
 	return {
@@ -24,6 +25,13 @@ export function receiveFlyers (flyers) {
 	return {
 		type: RECEIVE_FLYERS,
 		flyers,
+	}
+}
+
+export function editFlyer(flyer) {
+	return {
+		type: EDIT_FLYER,
+		flyer
 	}
 }
 

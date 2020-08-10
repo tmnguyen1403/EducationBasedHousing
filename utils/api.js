@@ -1,14 +1,17 @@
 import { userLogin, receiveEvents, createEvent,
-	receiveFlyers } from '../actions'
+	receiveFlyers, editFlyer } from '../actions'
 import { HOST } from './configs'
 import { IMAGE_HOST } from '../utils/configs'
 
 //server functions
-const URL = HOST + 'api/'
+const API_URL = HOST + 'api/'
 
+export const isDefined = (value) => {
+	return value & value !== undefined
+}
 export const validateUser = async (user, dispatch) => {
 	const path = "user/login"
-	const url = URL + path
+	const url = API_URL + path
 
 	const response = await fetch(url, {
 		method: 'POST',
@@ -33,7 +36,7 @@ export const validateUser = async (user, dispatch) => {
 
 export function fetchCalendarEvents(communityId, token, dispatch) {
 	const path = "event/get"
-	const url = URL + path
+	const url = API_URL + path
 	console.log("fetchEvent for community:", communityId)
 	console.log("token", token)
 	fetch(url, {
@@ -61,7 +64,7 @@ export function fetchCalendarEvents(communityId, token, dispatch) {
 
 export function fetchFlyers(communityId, token, dispatch) {
 	const path = "flyer/get"
-	const url = URL + path
+	const url = API_URL + path
 	console.log("fetchFlyers for community:", communityId)
 	console.log("token", token)
 	fetch(url, {
@@ -91,7 +94,7 @@ export function fetchFlyers(communityId, token, dispatch) {
 
 export const fetchCreateEvent = async (newEvent, token, dispatch) => {
 	const path = "event/create"
-	const url = URL + path
+	const url = API_URL + path
 	console.log("fetchCreateEvent")
 	const result = await fetch(url, {
 		method: "POST",
@@ -112,7 +115,7 @@ export const fetchCreateEvent = async (newEvent, token, dispatch) => {
 
 export const fetchCreateFlyer = async (newFlyer, token, dispatch) => {
 	const path = "flyer/create"
-	const url = URL + path
+	const url = API_URL + path
 	console.log("fetchCreateFlyer")
 	try {
 		const result = await fetch(url, {
@@ -136,27 +139,32 @@ export const fetchCreateFlyer = async (newFlyer, token, dispatch) => {
 
 export const fetchEditFlyer = async (newFlyer, flyerId, token, dispatch) => {
 	const path = "flyer/" + flyerId + "/update"
-	const url = URL + path
-	console.log("fetchEditFlyer")
-	try {
-		const result = await fetch(url, {
-			method: "PUT",
+	const url = API_URL + path
+	console.warn("Start fetchEditFlyer")
+	fetch(url, {
+			method: "put",
 			headers: {
+				'accept': 'application/json',
 				'Content-Type': 'multipart/form-data',
 				'token': token
 			},
 			body: newFlyer
+	}).then(result => {
+			console.log("Result ", result)
+			return result.json()
+	})
+		.then(json => {
+			if (!json.success)
+				throw new Error(json.error)
+			else if (isDefined(json.flyer)) {
+					console.log("editFlyerJson", json)
+					dispatch(editFlyer(json.flyer))
+					return true
+			}
+		}).catch (error => {
+			console.warn("Error fetchEditFlyer", error.message)
+			//throw(error)
 		})
-		if (result.status === 200) {
-			console.log("FetchEditFlyer successfully")
-		}
-		else {
-			throw new Error(resultJson.error)
-		}
-	} catch (error) {
-		console.warn("Error fetchCreateFlyer", error.message)
-		throw(error)
-	}
 }
 
 //normal function
