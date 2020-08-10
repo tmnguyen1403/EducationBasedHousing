@@ -87,13 +87,20 @@ class BulletinEditModal extends Component {
 				return
 			}
 			const data = new FormData()
+			let deleteFiles = ""
 			editedFields.forEach(key => {
 				let value = this.state[key]
 				if (key === "title")
 					data.append(key, this.state[key])
 				else //handle images
+				{
 					data.append(key, this.getImageInfo(value))
+					deleteFiles += this.init[key] + ";"
+				}
 			})
+			//use this to delete old data from server
+			if (deleteFiles.length > 0)
+				data.append("deleteFiles", deleteFiles)
 			const flyerId = this.state._id
 			fetchEditFlyer(data, flyerId, token, dispatch)
 			.then(() => {

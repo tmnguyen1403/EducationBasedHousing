@@ -137,7 +137,7 @@ export const fetchCreateFlyer = async (newFlyer, token, dispatch) => {
 export const fetchEditFlyer = async (newFlyer, flyerId, token, dispatch) => {
 	const path = "flyer/" + flyerId + "/update"
 	const url = URL + path
-	console.log("fetchCreateFlyer")
+	console.log("fetchEditFlyer")
 	try {
 		const result = await fetch(url, {
 			method: "PUT",
@@ -155,6 +155,7 @@ export const fetchEditFlyer = async (newFlyer, flyerId, token, dispatch) => {
 		}
 	} catch (error) {
 		console.warn("Error fetchCreateFlyer", error.message)
+		throw(error)
 	}
 }
 
