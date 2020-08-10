@@ -7,12 +7,13 @@ import {Text,
 	TextInput,
 	TouchableOpacity,
 	Image,} from 'react-native'
+//Custom Component
+import BulletinView from './BulletinView'
 //REDUX STORE
 import {connect} from 'react-redux'
 //action
 import {createEvent} from '../actions'
 import { getCommunityId, fetchCreateEvent } from '../utils/api'
-import { AsyncStorage } from 'react-native'
 import { getImagePath } from '../utils/api'
 
 class BulletinModal extends Component {
@@ -25,7 +26,7 @@ class BulletinModal extends Component {
 		const {visible, bulletin, hideModal, admin} = this.props
 		if (!visible)
 			return null
-		const imageUri = getImagePath(bulletin.imageName)
+		console.log("BulletinModal ", bulletin)
     return (
         <View style={styles.container}>
           <Modal
@@ -50,11 +51,7 @@ class BulletinModal extends Component {
 
 							</View>
 						{/*body*/}
-						<View>
-							<Image style={styles.image}
-								source={{uri: imageUri}}
-							/>
-						</View>
+						<BulletinView bulletin={bulletin}/>
 
           </Modal>
         </View>

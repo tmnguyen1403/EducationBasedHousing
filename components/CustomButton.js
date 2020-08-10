@@ -2,7 +2,7 @@ import React, {Component } from 'react'
 import { View, Text, StyleSheet, TouchableOpacity } from 'react-native'
 import textStyle from '../utils/textstyle'
 
-function CustomButton({ name, icon, customStyle, onPress }){
+function CustomButton({ name, icon, customStyle, onPress}){
 	return (
 		<TouchableOpacity style={[styles.btnView, customStyle]}
 			onPress={onPress}>

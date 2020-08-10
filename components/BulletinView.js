@@ -17,16 +17,15 @@ import { getImagePath } from '../utils/api'
 export default class BulletinView extends Component
 {
 	componentDidMount() {
+			console.log("called bulletin view")
 			// const communityId = "5f263e14fc876d193c144d15"
 			// const token = ""
 			// fetchFlyers(communityId, token, this.props.dispatch)
 	}
 
 	render() {
-		// const backgroundImage = require('../resources/images/background_image.jpg')
-		// const flyer1 =  require('../resources/images/kid_beach.jpg')
-		//const flyer2 =  require('../resources/images/kid_beach.jpg')
 		const {bulletin, local} = this.props
+		console.log("Bulletin View:", bulletin)
 		if (bulletin === undefined || bulletin === null)
 			return null
 		let {background, flyer1, flyer2} = bulletin
@@ -36,8 +35,6 @@ export default class BulletinView extends Component
 			flyer1 = getImagePath(flyer1)
 			flyer2 = getImagePath(flyer2)
 		}
-		console.log("Bulletin ", bulletin)
-		console.log("Background ", background)
 		return (
 			<ImageBackground
 				style={[mainstyles.container, styles.column]}

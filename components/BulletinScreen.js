@@ -14,21 +14,34 @@ import { fetchFlyers, getCommunityId, getToken } from '../utils/api'
 
 class BulletinScreen extends Component {
 	state = {
-		showModal: false
+		showModal: false,
+		bulletin: null
 	}
-	toggleModal() {
-		this.setState({showModal: !this.state.showModal})
+	toggleModal(id) {
+		//get the correct bulletin to pass to BulletinModal
+		if (id && this.props.flyers) {
+			const bulletin = this.props.flyers.filter(b => b._id === id)
+			if (bulletin.length > 0)
+				this.setState({
+					showModal: !this.state.showModal,
+					bulletin: bulletin[0]
+				})
+		} else {
+			this.setState({showModal: !this.state.showModal})
+		}
+	}
+	hideModal() {
+		this.setState({showModal: false})
 	}
 	componentDidMount() {
 		const {user, communities, dispatch} = this.props
-		console.log("flyer screen did mount")
+		console.log("bulletinscreen did mount")
 		const communityId = getCommunityId(communities)
 		const token = getToken(user)
 		fetchFlyers(communityId, token, dispatch)
 	}
 	render() {
 		const {flyers} = this.props
-		console.log("flyer screen", flyers)
 		if (flyers.length === 0)
 			return (
 				<View style = {mainstyles.container}>
@@ -36,29 +49,38 @@ class BulletinScreen extends Component {
 				</View>
 			)
 		return (
-			<ScrollView >
-				{flyers.length > 0 &&
-					flyers.map(bulletin =>
-						<View style={mainstyles.container}>
+			<View style={{maxHeight: "100%"}}>
+			<ScrollView contentContainerStyle={{flexGrow: 1}}>
+				{
+					flyers.map(bulletin =>{
+						const bulletinId = bulletin._id
+						return (<View key={bulletinId}
+							style={[{minHeight: 400}]}>
 							<BulletinViewServer
 								local={false}
-								key={bulletin._id}
+								key={bulletinId}
 								bulletin={bulletin}/>
 							<CustomButton
 								customStyle={styles.button}
-								name="View Detail" onPress={() => this.toggleModal()}/>
-							<BulletinModal visible={this.state.showModal} bulletin={bulletin}
-								hideModal={() => this.toggleModal()}/>
-						</View>
+								name="Details"
+								onPress={() => this.toggleModal(bulletinId)}/>
+						</View>)
+						}
 					)
 				}
+				<BulletinModal
+					bulletin={this.state.bulletin}
+					visible={this.state.showModal}
+					hideModal={() => this.toggleModal()}/>
 			</ScrollView>
+			</View>
 		)
 	}
 }
 
 const styles = StyleSheet.create({
 	container: {
+		alignSelf: "stretch",
 		margin: 10,
 	},
 	button: {

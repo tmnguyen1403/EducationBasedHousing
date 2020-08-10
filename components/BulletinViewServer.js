@@ -17,6 +17,7 @@ import { getImagePath } from '../utils/api'
 export default class BulletinViewServer extends Component
 {
 	componentDidMount() {
+			console.log("BulletinViewServer did mount")
 			// const communityId = "5f263e14fc876d193c144d15"
 			// const token = ""
 			// fetchFlyers(communityId, token, this.props.dispatch)
@@ -36,10 +37,10 @@ export default class BulletinViewServer extends Component
 			flyer1 = getImagePath(flyer1)
 			flyer2 = getImagePath(flyer2)
 		}
-		console.log("Bulletin ", bulletin)
-		console.log("Background ", background)
-		console.log("Flyer1 ", flyer1)
-		console.log("Flyer2 ", flyer2)
+		// console.log("Bulletin ", bulletin)
+		// console.log("Background ", background)
+		// console.log("Flyer1 ", flyer1)
+		// console.log("Flyer2 ", flyer2)
 		return (
 			<ImageBackground
 				style={[mainstyles.column, styles.column]}
@@ -50,7 +51,6 @@ export default class BulletinViewServer extends Component
 							style={[styles.image]}
 							source={{uri: flyer1}}
 						>
-
 						</Image>
 						:
 						null
@@ -75,7 +75,7 @@ const styles = StyleSheet.create({
 	},
 	image: {
 		width: "90%",
-		height: 100,
+		minHeight: 100,
 		flexBasis: 100,
 		flexGrow: 5,
 		margin: 10,
