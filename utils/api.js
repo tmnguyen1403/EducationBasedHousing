@@ -144,8 +144,6 @@ export const fetchEditFlyer = async (newFlyer, flyerId, token, dispatch) => {
 	fetch(url, {
 			method: "put",
 			headers: {
-				'accept': 'application/json',
-				'Content-Type': 'multipart/form-data',
 				'token': token
 			},
 			body: newFlyer
@@ -163,6 +161,33 @@ export const fetchEditFlyer = async (newFlyer, flyerId, token, dispatch) => {
 			}
 		}).catch (error => {
 			console.warn("Error fetchEditFlyer", error.message)
+			//throw(error)
+		})
+}
+
+export const fetchDeleteFlyer = async (flyerId, token, dispatch) => {
+	const path = "flyer/" + flyerId
+	const url = API_URL + path
+	console.warn("Start fetchDeleteFlyer")
+	fetch(url, {
+			method: "delete",
+			headers: {
+				'token': token
+			}
+	}).then(result => {
+			console.log("Result ", result)
+			return result.json()
+	})
+		.then(json => {
+			if (!json.success)
+				throw new Error(json.error)
+			else if (isDefined(json.flyer)) {
+					console.log("deleteFlyerJson", json)
+					//dispatch(editFlyer(json.flyer))
+					return true
+			}
+		}).catch (error => {
+			console.warn("Error fetchDeleteFlyer", error.message)
 			//throw(error)
 		})
 }

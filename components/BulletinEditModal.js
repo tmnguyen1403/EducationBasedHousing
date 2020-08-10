@@ -13,7 +13,7 @@ import TimePicker from './TimePicker'
 import {connect} from 'react-redux'
 import { editFlyer } from '../actions'
 /*-------------*/
-import { fetchEditFlyer } from '../utils/api'
+import { fetchEditFlyer, fetchDeleteFlyer } from '../utils/api'
 import { AsyncStorage } from 'react-native'
 import ImagePicker from './TestImagePicker'
 import BulletinView from './BulletinView'
@@ -78,6 +78,10 @@ class BulletinEditModal extends Component {
 	}
 	raiseError(error){
 		this.setState({error})
+	}
+	deleteFlyer(){
+		const {token, dispatch} = this.props
+		fetchDeleteFlyer(this.state._id, token, dispatch)
 	}
 	update() {
 		try {
@@ -149,11 +153,11 @@ class BulletinEditModal extends Component {
 								<TouchableOpacity onPress={() => this.closeModal()}>
 									<Text style={[styles.topBarText, styles.cancelText]}>Cancel</Text>
 								</TouchableOpacity>
-								<TouchableOpacity>
-									<Text style={styles.topBarText}>Edit Bulletin</Text>
-								</TouchableOpacity>
 								<TouchableOpacity onPress={() => this.update()}>
-									<Text style={[styles.topBarText, styles.createText]}>Create</Text>
+									<Text style={[styles.topBarText, styles.createText]}>Update</Text>
+								</TouchableOpacity>
+								<TouchableOpacity onPress={() => this.deleteFlyer()}>
+									<Text style={[styles.topBarText, styles.cancelText]}>Delete</Text>
 								</TouchableOpacity>
 							</View>
 						{/*body*/}
