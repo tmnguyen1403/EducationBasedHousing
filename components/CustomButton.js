@@ -2,11 +2,12 @@ import React, {Component } from 'react'
 import { View, Text, StyleSheet, TouchableOpacity } from 'react-native'
 import textStyle from '../utils/textstyle'
 
-function CustomButton({ name, icon, customStyle }){
+function CustomButton({ name, icon, customStyle, onPress}){
 	return (
-		<TouchableOpacity style={[styles.dashboardDefault, customStyle]}>
+		<TouchableOpacity style={[styles.btnView, customStyle]}
+			onPress={onPress}>
 			{icon}
-			<Text style={textStyle.main}>
+			<Text style={styles.btnText}>
 				{name}
 			</Text>
 		</TouchableOpacity>
@@ -14,11 +15,17 @@ function CustomButton({ name, icon, customStyle }){
 }
 
 const styles = StyleSheet.create({
-	dashboardDefault: {
-		backgroundColor: 'white',
-		margin: 10,
+	btnView: {
+		marginTop: 5,
+		backgroundColor: "#7d90c7",
+		height: 30,
 		justifyContent: 'center',
-		alignItems: 'center'
+		alignItems: 'center',
+		borderRadius: 5,
+		padding: 5,
+	},
+	btnText: {
+		color: "white",
 	}
 })
 

@@ -1,15 +1,15 @@
 import React, {Component } from 'react'
 import { View, Text, StyleSheet, TouchableOpacity } from 'react-native'
 import { FontAwesome } from '@expo/vector-icons';
-import textStyle from '../utils/textstyle'
+import mainstyles from '../styles/main'
 
 class Calendar extends Component {
 	render() {
 		const { style, navigate } = this.props
 		return (
-			<TouchableOpacity style={[styles.calendar, style]} onPress={() => navigate()}>
+			<TouchableOpacity style={style} onPress={() => navigate()}>
 				<FontAwesome name="calendar" size={40} color="blue"/>
-				<Text style={textStyle.main}>Calendar</Text>
+				<Text style={mainstyles.text}>Calendar</Text>
 			</TouchableOpacity>
 		)
 	}

@@ -1,17 +1,11 @@
 import React, { useState } from "react";
 import { View, Picker, StyleSheet, Text, Fragment } from "react-native";
 
-//custom helpers
-import { getAmPmTimes } from '../utils/api'
+const CommunityPicker = ({visible, getValue, communities, defaultValue}) => {
 
-const TimePicker = ({visible, getValue}) => {
+  const [selectedValue, setSelectedValue] = useState(defaultValue);
+	console.log("hello communitypicker")
 
-  const [selectedValue, setSelectedValue] = useState("");
-	if (!visible) {
-		console.log("hello timepicker")
-		return null
-	}
-	let times = getAmPmTimes()
   return (
       <Picker
         selectedValue={selectedValue}
@@ -22,11 +16,11 @@ const TimePicker = ({visible, getValue}) => {
 				}}
 				mode="dialog"
       >
-			{ times.map(hour =>
+			{ communities.map((community, index) =>
 				<Picker.Item
-				key={hour}
-				label={hour}
-				value={hour}/>)
+				key={community._id}
+				label={community.name}
+				value={index}/>)
 			}
       </Picker>
   );
@@ -43,4 +37,4 @@ const styles = StyleSheet.create({
 	}
 });
 
-export default TimePicker;
+export default CommunityPicker;

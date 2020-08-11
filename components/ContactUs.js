@@ -1,10 +1,10 @@
 import React, {Component } from 'react'
 import { View, Text, StyleSheet, TouchableOpacity } from 'react-native'
 import { Ionicons } from '@expo/vector-icons';
-import textStyle from '../utils/textstyle'
-import CoordinatorModal from './CoordinatorModal'
+import mainstyles from '../styles/main'
+import ContactUsModal from './ContactUsModal'
 
-class MyCoordinator extends Component {
+class ContactUs extends Component {
 	state = {
 		showModal: false
 	}
@@ -14,11 +14,11 @@ class MyCoordinator extends Component {
 	render() {
 		const { style } = this.props
 		return (
-			<TouchableOpacity style={[styles.calendar, style]}
+			<TouchableOpacity style={style}
 				onPress={() => this.toggleModal()}>
 				<Ionicons name="ios-contact" size={40} color="blue"/>
-				<Text style={textStyle.main}>My Coordinator</Text>
-				<CoordinatorModal visible={this.state.showModal} hideModal={() => this.toggleModal()}/>
+				<Text style={mainstyles.text}>ContactUs</Text>
+				<ContactUsModal visible={this.state.showModal} hideModal={() => this.toggleModal()}/>
 			</TouchableOpacity>
 		)
 	}
@@ -33,4 +33,4 @@ const styles = StyleSheet.create({
 	}
 })
 
-export default MyCoordinator
+export default ContactUs

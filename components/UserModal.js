@@ -13,20 +13,17 @@ import TimePicker from './TimePicker'
 import {connect} from 'react-redux'
 //action
 import {createEvent} from '../actions'
-import { getCommunityId, fetchCreateEvent } from '../utils/api'
+import { CALENDAR_STORAGE_KEY} from '../utils/calendar'
 import { AsyncStorage } from 'react-native'
 
-class EventModal extends Component {
+class UserModal extends Component {
 	state = {
-		showDatePicker: false,
-		showStartPicker: false,
-		showEndPicker: false,
-		name: "This is new event",
-		location: "Education Based Housing",
-		description: "Hello",
-		date: "",
-		start: "",
-		end: "",
+		username: "",
+		password: "",
+		name: "",
+		coordinator: "",
+		admin: 0,
+		phone: "",
 	}
   closeModal() {
     this.props.hideModal();
@@ -34,53 +31,40 @@ class EventModal extends Component {
 	createEvent() {
 		//send new events to database
 		//add new events to redux store
-		const {name, location, description, date, start, end} = this.state
-		const { communities, token, dispatch, hideModal } = this.props
-		const newEvent = {
-			name: name,
-			location: location,
-			description: description,
-			date: date,
-			start: start,
-			end: end,
-			communityid: getCommunityId(communities)
-		}
-		fetchCreateEvent(newEvent, token, dispatch)
-		.then(() => {
-			console.log("Create new event successfully")
-			hideModal()
-		})
-		.catch(error => {
-			console.log("Error create event", error.message)
-		})
+		const data = {[this.state.username] : {
+			username: this.state.username,
+			password: this.state.password,
+			name: this.state.name,
+			coordinator: this.state.coordinator,
+			admin: this.state.admin,
+			phone: this.state.phone,
+		}}
+		//AsyncStorage.setItem(CALENDAR_STORAGE_KEY, JSON.stringify(data))
+		this.props.dispatch(createEvent(data))
+		this.props.hideModal();
 		return true
 	}
 	//get selected date from date picker
 	getDate(value) {
+		console.log("getDate:", value)
 		this.setState({date: value})
 	}
-	getStart(start) {
-		console.log("called getStart")
-		this.setState({start: start})
-	}
-	getEnd(end) {
-		console.log("called getEnd")
-
-		this.setState({end: end})
+	getTime(value) {
+		console.log("getDate:", value)
+		//this.setState({start: value})
+		//this.setState({end: value})
 	}
 	toggleDatePicker() {
 		this.setState({showDatePicker: !this.state.showDatePicker})
 	}
-	toggleStartPicker() {
-		this.setState({showStartPicker: !this.state.showStartPicker})
-	}
-	toggleEndPicker() {
-		this.setState({showEndPicker: !this.state.showEndPicker})
+	toggleTimePicker() {
+		this.setState({showTimePicker: !this.state.showTimePicker})
 	}
   render() {
 		const {visible, events} = this.props
 		if (!visible)
 			return null
+		console.log("event modal:", events)
     return (
         <View style={styles.container}>
           <Modal
@@ -98,7 +82,7 @@ class EventModal extends Component {
 									<Text style={[styles.topBarText, styles.cancelText]}>Cancel</Text>
 								</TouchableOpacity>
 								<TouchableOpacity>
-									<Text style={styles.topBarText}>New Event</Text>
+									<Text style={styles.topBarText}>New User</Text>
 								</TouchableOpacity>
 								<TouchableOpacity onPress={() => this.createEvent()}>
 									<Text style={[styles.topBarText, styles.createText]}>Create</Text>
@@ -107,68 +91,46 @@ class EventModal extends Component {
 						{/*body*/}
 						<View>
               <View style={styles.item}>
-								<Text style={styles.label}>Title</Text>
+								<Text style={styles.label}>Username</Text>
 								<TextInput
 									style={styles.textInput}
-									placeholder="Title"
-									value={this.state.name}
-									onChangeText={(name) => this.setState({name})}/>
+									placeholder="Username"
+									value={this.state.title}
+									onChange={(text) => this.setState({username: text})}/>
 							</View>
 							<View style={styles.item}>
-								<Text style={styles.label}>Location</Text>
+								<Text style={styles.label}>Password</Text>
 								<TextInput
 									style={styles.textInput}
 									value={this.state.location}
-									onChangeText={(location) => this.setState({location})}
-									placeholder="Location"/>
+									onChange={(text) => this.setState({password: text})}
+									placeholder="Password"/>
 							</View>
 							<View style={styles.item}>
-								<Text style={styles.label}>Description</Text>
+								<Text style={styles.label}>Name</Text>
+								<TextInput
+									style={styles.textInput}
+									value={this.state.location}
+									onChange={(text) => this.setState({name: text})}
+									placeholder="Name"/>
+							</View>
+							<View style={styles.item}>
+								<Text style={styles.label}>Coordinator</Text>
 								<TextInput
 									style={styles.textInput}
 									value={this.state.description}
-									onChangeText={(description) => this.setState({description})}
-									placeholder="Description"/>
+									onChange={(text) => this.setState({coordinator: text})}
+									placeholder="Coordinator"/>
 							</View>
-
-							<TouchableOpacity style={styles.item}
-								onPress={() => this.toggleDatePicker()}>
-								<Text style={styles.label}>Date</Text>
+							<View style={styles.item}>
+								<Text style={styles.label}>Phone Number</Text>
 								<TextInput
 									style={styles.textInput}
-									value={this.state.date}
-									placeholder="Date"/>
-							</TouchableOpacity>
-
-							<TouchableOpacity style={styles.item}
-								onPress={() => this.toggleStartPicker()}>
-								<Text style={styles.label}>Start</Text>
-								<TextInput
-									style={styles.textInput}
-									value={this.state.start}
-									placeholder="StartTime"/>
-								<TimePicker
-									visible={this.state.showStartPicker}
-									getValue={(value) => this.getStart(value)}
-								/>
-							</TouchableOpacity>
-							<TouchableOpacity style={styles.item}
-								onPress={() => this.toggleEndPicker()}>
-								<Text style={styles.label}>End</Text>
-								<TextInput
-									style={styles.textInput}
-									value={this.state.end}
-									placeholder="EndTime"/>
-								<TimePicker
-									visible={this.state.showEndPicker}
-									getValue={(value) => this.getEnd(value)}
-								/>
-							</TouchableOpacity>
-							<DatePicker visible={this.state.showDatePicker}
-								getValue={(value) => this.getDate(value)}/>
-
-						</View>
-
+									value={this.state.description}
+									onChange={(text) => this.setState({phone: text})}
+									placeholder="888-888-8888"/>
+							</View>
+							</View>
           </Modal>
         </View>
     );
@@ -236,9 +198,7 @@ const styles = StyleSheet.create({
 
 function mapStateToProps(state) {
 	return {
-		events: state.events,
-		communities: state.communities,
-		token: state.user.token,
+		events: state.events
 	}
 }
-export default connect(mapStateToProps)(EventModal)
+export default connect(mapStateToProps)(UserModal)

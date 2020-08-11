@@ -2,9 +2,9 @@ import React, {Component } from 'react'
 import { View, Text, StyleSheet, TouchableOpacity, Fragment } from 'react-native'
 import { Ionicons } from '@expo/vector-icons';
 import mainstyles from '../styles/main'
-import EventModal from './EventModal'
+import CommunitySwitchModal from './CommunitySwitchModal'
 
-class EventCreator extends Component {
+class CommunitySwitch extends Component {
 	state = {
 		showModal: false
 	}
@@ -18,8 +18,8 @@ class EventCreator extends Component {
 				style={[styles.calendar, style]}
 				onPress={() => this.toggleModal()}>
 				<Ionicons name="ios-create" size={40} color="blue" />
-				<Text style={mainstyles.text}>Create Event</Text>
-				<EventModal
+				<Text style={mainstyles.text}>Change Community</Text>
+				<CommunitySwitchModal
 					visible={this.state.showModal}
 					hideModal={() => this.toggleModal()}/>
 			</TouchableOpacity>
@@ -28,6 +28,12 @@ class EventCreator extends Component {
 }
 
 const styles = StyleSheet.create({
+	calendar: {
+		backgroundColor: 'white',
+		margin: 10,
+		justifyContent: 'center',
+		alignItems: 'center'
+	}
 })
 
-export default EventCreator
+export default CommunitySwitch

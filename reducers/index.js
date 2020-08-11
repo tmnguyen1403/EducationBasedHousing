@@ -1,6 +1,8 @@
 import {
 		RECEIVE_USER, USER_LOGIN, USER_LOGOUT,
-	 	RECEIVE_EVENTS, CREATE_EVENT } from '../actions'
+	 	RECEIVE_EVENTS,
+		RECEIVE_FLYERS, EDIT_FLYER,
+	 	RECEIVE_COMMUNITIES, CHANGE_COMMUNITY } from '../actions'
 import { combineReducers } from 'redux'
 
 function user (state = {}, action) {
@@ -28,26 +30,61 @@ function user (state = {}, action) {
 	}
 }
 
-export function events(state = {}, action) {
+export function events(state = [], action) {
 	switch (action.type) {
 		case RECEIVE_EVENTS:
-			return {
-				...state,
+			return [
 				...action.events
-			}
-		case CREATE_EVENT:
-			console.log("create event")
-			return {
-				...state,
-				...action.event,
-			}
+			]
 		default:
 			return state
 	}
 }
+
+export function flyers(state = [], action) {
+	switch (action.type) {
+		case RECEIVE_FLYERS:
+			return [
+				...action.flyers
+			]
+		case EDIT_FLYER:
+			console.log("called editflyer")
+			let flyer = action.flyer
+			let newFlyers = state.map(data => {
+				if (data._id === flyer._id)
+					return flyer
+				return data
+			})
+			return newFlyers
+		default:
+			return state
+	}
+}
+
+export function communities(state = {}, action) {
+	switch (action.type) {
+		case RECEIVE_COMMUNITIES:
+			console.log(RECEIVE_COMMUNITIES)
+			return {
+				...state,
+				...action.communities,
+			}
+		case CHANGE_COMMUNITY:
+				console.log(CHANGE_COMMUNITY)
+				return {
+					...state,
+					chosenIndex: action.chosenIndex,
+				}
+		default:
+			return state
+	}
+}
+
 export default combineReducers(
 	{
 		user,
-		events
+		events,
+		flyers,
+		communities,
 	}
 )

@@ -2,9 +2,9 @@ import React, {Component } from 'react'
 import { View, Text, StyleSheet, TouchableOpacity, Fragment } from 'react-native'
 import { Ionicons } from '@expo/vector-icons';
 import mainstyles from '../styles/main'
-import EventModal from './EventModal'
+import UserModal from './UserModal'
 
-class EventCreator extends Component {
+class UserCreator extends Component {
 	state = {
 		showModal: false
 	}
@@ -15,11 +15,11 @@ class EventCreator extends Component {
 		const { style } = this.props
 		return (
 			<TouchableOpacity
-				style={[styles.calendar, style]}
+				style={style}
 				onPress={() => this.toggleModal()}>
 				<Ionicons name="ios-create" size={40} color="blue" />
-				<Text style={mainstyles.text}>Create Event</Text>
-				<EventModal
+				<Text style={mainstyles.text}>Create User</Text>
+				<UserModal
 					visible={this.state.showModal}
 					hideModal={() => this.toggleModal()}/>
 			</TouchableOpacity>
@@ -30,4 +30,4 @@ class EventCreator extends Component {
 const styles = StyleSheet.create({
 })
 
-export default EventCreator
+export default UserCreator
