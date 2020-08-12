@@ -1,0 +1,8 @@
+#Issue1: Update Flyer successfully to server but cannot
+get proper response from server
+
+#Detail: The issue happened using the default fetch provided by
+React which is "whatwg-fetch". When sending "multipart/form-data",
+it returned Blob response(code 200) without json response from server.
+_Solution: using "axios" library fix this issue.
+->"whatwg-fetch" does not implement this part correctly
