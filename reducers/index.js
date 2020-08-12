@@ -48,13 +48,15 @@ export function flyers(state = [], action) {
 				...action.flyers
 			]
 		case EDIT_FLYER:
-			console.log("called editflyer")
+			console.warn("called action editflyer")
 			let flyer = action.flyer
+			console.log("Old flyer", state)
 			let newFlyers = state.map(data => {
 				if (data._id === flyer._id)
 					return flyer
 				return data
 			})
+			console.log("New flyers", newFlyers)
 			return newFlyers
 		default:
 			return state

@@ -2,13 +2,68 @@ import { userLogin, receiveEvents, createEvent,
 	receiveFlyers, editFlyer } from '../actions'
 import { HOST } from './configs'
 import { IMAGE_HOST } from '../utils/configs'
-
+import axios from 'axios'
 //server functions
 const API_URL = HOST + 'api/'
 
 export const isDefined = (value) => {
-	return value & value !== undefined
+	return value && value !== undefined
 }
+/*----------------------Test----------------*/
+/*For multipart/form-data, use axios library will help for receiving response
+from server*/
+export const fetchCreateFlyer = async (newFlyer, token, dispatch) => {
+	const path = "flyer/create"
+	const url = API_URL + path
+	console.log("fetchCreateFlyer")
+	try {
+		const response = await axios({
+			url: url,
+			method: "POST",
+			headers: {
+				'Content-Type': 'multipart/form-data',
+				'token': token
+			},
+			data: newFlyer
+		})
+
+		if (response.status === 200) {
+			console.log("Create Flyer ", response.data)
+			console.log("FetchCreateFlyer successfully")
+		}
+		else {
+			throw new Error(resultJson.error)
+		}
+	} catch (error) {
+		console.log("Error fetchCreateFlyer", error.message)
+	}
+}
+
+export const fetchEditFlyer = async (newFlyer, flyerId, token, dispatch) => {
+	const path = "flyer/" + flyerId + "/update"
+	const url = API_URL + path
+	console.warn("Start fetchEditFlyer")
+	axios({
+			url: url,
+			method: "put",
+			headers: {
+				'token': token
+			},
+			data: newFlyer
+	}).then(result => {
+			if (result && result.status === 200) {
+				console.log("Edit data ", result.data)
+				if (isDefined(result.data) && isDefined(result.data.flyer))
+					console.log("Called dispatch editFlyer")
+					dispatch(editFlyer(result.data.flyer))
+			}
+	}).catch (error => {
+			console.warn("Error fetchEditFlyer", error.message)
+			//throw(error)
+	})
+}
+/*----------------------Test----------------*/
+
 export const validateUser = async (user, dispatch) => {
 	const path = "user/login"
 	const url = API_URL + path
@@ -113,57 +168,57 @@ export const fetchCreateEvent = async (newEvent, token, dispatch) => {
 	}
 }
 
-export const fetchCreateFlyer = async (newFlyer, token, dispatch) => {
-	const path = "flyer/create"
-	const url = API_URL + path
-	console.log("fetchCreateFlyer")
-	try {
-		const result = await fetch(url, {
-			method: "POST",
-			headers: {
-				'Content-Type': 'multipart/form-data',
-				'token': token
-			},
-			body: newFlyer
-		})
-		if (result.status === 200) {
-			console.log("FetchCreateFlyer successfully")
-		}
-		else {
-			throw new Error(resultJson.error)
-		}
-	} catch (error) {
-		console.log("Error fetchCreateFlyer", error.message)
-	}
-}
+// export const fetchCreateFlyer = async (newFlyer, token, dispatch) => {
+// 	const path = "flyer/create"
+// 	const url = API_URL + path
+// 	console.log("fetchCreateFlyer")
+// 	try {
+// 		const result = await fetch(url, {
+// 			method: "POST",
+// 			headers: {
+// 				'Content-Type': 'multipart/form-data',
+// 				'token': token
+// 			},
+// 			body: newFlyer
+// 		})
+// 		if (result.status === 200) {
+// 			console.log("FetchCreateFlyer successfully")
+// 		}
+// 		else {
+// 			throw new Error(resultJson.error)
+// 		}
+// 	} catch (error) {
+// 		console.log("Error fetchCreateFlyer", error.message)
+// 	}
+// }
 
-export const fetchEditFlyer = async (newFlyer, flyerId, token, dispatch) => {
-	const path = "flyer/" + flyerId + "/update"
-	const url = API_URL + path
-	console.warn("Start fetchEditFlyer")
-	fetch(url, {
-			method: "put",
-			headers: {
-				'token': token
-			},
-			body: newFlyer
-	}).then(result => {
-			console.log("Result ", result)
-			return result.json()
-	})
-		.then(json => {
-			if (!json.success)
-				throw new Error(json.error)
-			else if (isDefined(json.flyer)) {
-					console.log("editFlyerJson", json)
-					dispatch(editFlyer(json.flyer))
-					return true
-			}
-		}).catch (error => {
-			console.warn("Error fetchEditFlyer", error.message)
-			//throw(error)
-		})
-}
+// export const fetchEditFlyer = async (newFlyer, flyerId, token, dispatch) => {
+// 	const path = "flyer/" + flyerId + "/update"
+// 	const url = API_URL + path
+// 	console.warn("Start fetchEditFlyer")
+// 	fetch(url, {
+// 			method: "put",
+// 			headers: {
+// 				'token': token
+// 			},
+// 			body: newFlyer
+// 	}).then(result => {
+// 			console.log("Result ", result)
+// 			return result.json()
+// 	})
+// 		.then(json => {
+// 			if (!json.success)
+// 				throw new Error(json.error)
+// 			else if (isDefined(json.flyer)) {
+// 					console.log("editFlyerJson", json)
+// 					dispatch(editFlyer(json.flyer))
+// 					return true
+// 			}
+// 		}).catch (error => {
+// 			console.warn("Error fetchEditFlyer", error.message)
+// 			//throw(error)
+// 		})
+// }
 
 export const fetchDeleteFlyer = async (flyerId, token, dispatch) => {
 	const path = "flyer/" + flyerId
